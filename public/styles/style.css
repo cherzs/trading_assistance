@@ -1,0 +1,496 @@
+:root {
+    --primary-color: #00f7ff;
+    --secondary-color: #9d00ff;
+    --accent-color: #00ff88;
+    --background-dark: #0a0b1e;
+    --card-dark: #141432;
+    --text-light: #ffffff;
+    --text-gray: #8890b5;
+    --success-color: #00ff88;
+    --danger-color: #ff0055;
+    --glow-primary: 0 0 10px #00f7ff, 0 0 20px #00f7ff40;
+    --glow-secondary: 0 0 10px #9d00ff, 0 0 20px #9d00ff40;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--background-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(10, 11, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-shadow: var(--glow-primary);
+}
+
+.main-container {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.2rem;
+    height: calc(100vh - 4rem);
+    align-items: flex-start;
+}
+
+.trading-panel {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chart-section {
+    background: var(--card-dark);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 247, 255, 0.1);
+    box-shadow: var(--glow-primary);
+    height: 600px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeframe-selector {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    height: 40px;
+}
+
+#chartContainer {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    background: transparent;
+    position: relative;
+}
+
+.market-overview {
+    margin-top: 1rem;
+    color: var(--text-primary);
+}
+
+.market-overview h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+}
+
+.market-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.market-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.market-card:hover {
+    transform: translateY(-5px);
+}
+
+.market-card.up {
+    border-left: 3px solid var(--success-color);
+}
+
+.market-card.down {
+    border-left: 3px solid var(--danger-color);
+}
+
+.coin-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.up .price {
+    color: var(--success-color);
+    text-shadow: 0 0 10px var(--success-color);
+}
+
+.down .price {
+    color: var(--danger-color);
+    text-shadow: 0 0 10px var(--danger-color);
+}
+
+.chat-panel {
+    height: 600px;
+    flex: 1;
+    min-width: 300px;
+    background: rgba(20, 20, 50, 0.8);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(157, 0, 255, 0.1);
+    box-shadow: var(--glow-secondary);
+}
+
+.chat-header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chat-header i {
+    color: var(--primary-color);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 10px;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease;
+}
+
+.bot-message {
+    background: rgba(0, 247, 255, 0.1);
+    border-left: 3px solid var(--primary-color);
+    align-self: flex-start;
+}
+
+.user-message {
+    background: rgba(157, 0, 255, 0.1);
+    border-right: 3px solid var(--secondary-color);
+    align-self: flex-end;
+}
+
+.chat-input-container {
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#userInput {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 247, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-family: inherit;
+}
+
+#userInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: var(--glow-primary);
+}
+
+#sendButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#sendButton:hover {
+    transform: scale(1.1);
+    box-shadow: var(--glow-primary);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 247, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 247, 255, 0.4);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--text-gray);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Efek underline saat hover */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Styling khusus untuk Launch App */
+.nav-links .launch-app {
+    color: var(--primary-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+}
+
+.nav-links .launch-app:hover {
+    background: var(--primary-color);
+    color: var(--background-dark);
+    text-shadow: none;
+}
+
+.chart-toolbar {
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.timeframe-selector, .chart-tools {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-toolbar button, .chart-toolbar select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 247, 255, 0.1);
+    color: var(--text-light);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chart-toolbar button.active {
+    background: var(--primary-color);
+    color: var(--background-dark);
+}
+
+.chart-toolbar button:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--glow-primary);
+}
+
+.indicator-select {
+    min-width: 120px;
+    appearance: none;
+    padding-right: 2rem;
+    background-image: url("data:image/svg+xml,...");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+}
+
+.side-panel {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.portfolio-section {
+    background: var(--card-dark);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid rgba(157, 0, 255, 0.1);
+    box-shadow: var(--glow-secondary);
+}
+
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.portfolio-header h3 {
+    color: var(--text-light);
+    font-size: 1.2rem;
+}
+
+.portfolio-value {
+    font-size: 1.5rem;
+    color: var(--success-color);
+    text-shadow: 0 0 10px var(--success-color);
+}
+
+.portfolio-assets {
+    display: grid;
+    gap: 1rem;
+}
+
+.asset-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+.asset-item .up {
+    color: var(--success-color);
+}
+
+.news-section {
+    background: var(--card-dark);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 1px solid rgba(157, 0, 255, 0.1);
+}
+
+.news-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.news-container {
+    display: grid;
+    gap: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.news-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 3px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.news-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+}
+
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
+}
+
+.news-title {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.news-preview {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.news-time {
+    font-size: 0.8rem;
+}
+
+/* Chat input styling */
+.chat-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 247, 255, 0.1);
+    border-radius: 25px;
+    padding: 0.8rem 1rem;
+    color: var(--text-light);
+    width: 100%;
+    outline: none;
+}
+
+/* Hapus atau modifikasi style untuk chat bubble yang tidak diinginkan */
+.chat-input:focus + .chat-bubble,
+.chat-input:active + .chat-bubble {
+    display: none;
+}
+
+/* Pastikan chat bubble hanya muncul saat diinginkan */
+.chat-bubble {
+    display: none;
+}
+
+.chat-bubble.visible {
+    display: block;
+} 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Assistant - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-chart-line"></i>
+                Trading Assistant
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/features">Features</a>
+            <a href="/about">About</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/app" class="launch-app">Launch App</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="trading-panel">
+            <div class="chart-section">
+                <div class="chart-toolbar">
+                    <div class="timeframe-selector">
+                        <button class="active">1H</button>
+                        <button>4H</button>
+                        <button>1D</button>
+                        <button>1W</button>
+                    </div>
+                    
+                    <div class="chart-tools">
+                        <button onclick="chartComponent.changeChartType('line')" title="Line Chart">
+                            <i class="fas fa-chart-line"></i>
+                        </button>
+                        <button onclick="chartComponent.changeChartType('candlestick')" title="Candlestick">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                        <button onclick="chartComponent.changeChartType('area')" title="Area Chart">
+                            <i class="fas fa-chart-area"></i>
+                        </button>
+                        <button onclick="chartComponent.changeChartType('bar')" title="Bar Chart">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="chartContainer"></div>
+            </div>
+            
+            <div class="market-overview">
+                <h2>Market Overview</h2>
+                <div class="market-cards">
+                    <div class="market-card up">
+                        <div class="coin-info">
+                            <i class="fab fa-bitcoin"></i>
+                            <span>BTC/USD</span>
+                        </div>
+                        <div class="price">$45,234 <i class="fas fa-arrow-up"></i></div>
+                    </div>
+                    <div class="market-card down">
+                        <div class="coin-info">
+                            <i class="fab fa-ethereum"></i>
+                            <span>ETH/USD</span>
+                        </div>
+                        <div class="price">$2,345 <i class="fas fa-arrow-down"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-section">
+                <h2>Market News</h2>
+                <div class="news-container">
+                    <div class="news-item">
+                        <div class="news-header">
+                            <i class="fas fa-newspaper"></i>
+                            <span class="news-time">5 min ago</span>
+                        </div>
+                        <h3 class="news-title">Bitcoin Breaks $50k Resistance</h3>
+                        <p class="news-preview">Bitcoin surges past $50,000 marking a significant milestone in its recovery...</p>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-header">
+                            <i class="fas fa-newspaper"></i>
+                            <span class="news-time">15 min ago</span>
+                        </div>
+                        <h3 class="news-title">Ethereum 2.0 Update Progress</h3>
+                        <p class="news-preview">The latest development in ETH 2.0 shows promising results for scalability...</p>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-header">
+                            <i class="fas fa-newspaper"></i>
+                            <span class="news-time">30 min ago</span>
+                        </div>
+                        <h3 class="news-title">DeFi Market Cap Reaches New ATH</h3>
+                        <p class="news-preview">Decentralized Finance continues to grow as total value locked exceeds...</p>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-header">
+                            <i class="fas fa-newspaper"></i>
+                            <span class="news-time">1 hour ago</span>
+                        </div>
+                        <h3 class="news-title">Major Bank Adopts Blockchain</h3>
+                        <p class="news-preview">Leading financial institution announces integration of blockchain technology...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-panel">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                <h2>AI Trading Assistant</h2>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Halo! I'm your AI Trading Assistant. What do you want to know about trading today?
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="userInput" placeholder="Ask something about trading...">
+                <button id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html> 
