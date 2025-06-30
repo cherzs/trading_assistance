@@ -18,6 +18,10 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: 'Space Grotesk', sans-serif;
     background: var(--background-dark);
@@ -51,6 +55,7 @@ body {
     padding: 1.2rem;
     height: calc(100vh - 4rem);
     align-items: flex-start;
+    min-height: 0;
 }
 
 .trading-panel {
@@ -58,6 +63,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    height: 100%;
+    min-height: 0;
 }
 
 .chart-section {
@@ -66,11 +73,12 @@ body {
     padding: 1.5rem;
     border: 1px solid rgba(0, 247, 255, 0.1);
     box-shadow: var(--glow-primary);
-    height: 600px;
+    height: 100%;
     width: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 .timeframe-selector {
@@ -152,7 +160,6 @@ body {
 }
 
 .chat-panel {
-    height: 600px;
     flex: 1;
     min-width: 300px;
     background: rgba(20, 20, 50, 0.8);
@@ -161,6 +168,8 @@ body {
     flex-direction: column;
     border: 1px solid rgba(157, 0, 255, 0.1);
     box-shadow: var(--glow-secondary);
+    height: 100%;
+    min-height: 0;
 }
 
 .chat-header {
