@@ -9,7 +9,7 @@ import json
 import time
 import threading
 import ssl
-from app import latest_bitcoin_data  # Import data Bitcoin
+from app import latest_bitcoin_data  
 
 gemini_bp = Blueprint('gemini', __name__)
 load_dotenv()
