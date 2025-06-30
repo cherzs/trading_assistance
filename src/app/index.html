@@ -17,10 +17,11 @@
             </a>
         </div>
         <div class="nav-links">
-            <a href="/features">Features</a>
-            <a href="/about">About</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/app" class="launch-app">Launch App</a>
+            <a href="/features"><i class="fas fa-star nav-icon"></i> Features</a>
+            <a href="/about"><i class="fas fa-info-circle nav-icon"></i> About</a>
+            <a href="/pricing"><i class="fas fa-tags nav-icon"></i> Pricing</a>
+            <a href="#signup" class="cta-button">Sign Up</a>
+            <a href="#profile" class="profile-icon"><i class="fas fa-user-circle"></i></a>
         </div>
     </nav>
 
@@ -28,9 +29,16 @@
         <div class="trading-panel">
             <div class="chart-section">
                 <div class="chart-context-header">
-                    <span class="pair">BTC/USDT</span> |
-                    <span class="timeframe">1H</span> |
-                    <span class="last-price">Last Price: $117</span>
+                    <input 
+                        id="symbolSearchInput"
+                        type="text" 
+                        placeholder="Search symbol (e.g. BTC/USDT)" 
+                        autocomplete="off"
+                        class="symbol-search-input"
+                    />
+                    <ul id="symbolSuggestions" class="symbol-suggestions"></ul>
+                    | <span class="timeframe" id="activeTimeframe">1H</span>
+                    | <span class="last-price" id="lastPrice">Last Price: $117</span>
                 </div>
                 <div class="chart-toolbar">
                     <div class="timeframe-selector">

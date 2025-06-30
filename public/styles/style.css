@@ -201,9 +201,12 @@ body {
 }
 
 .bot-message {
-    background: rgba(0, 247, 255, 0.1);
+    background: linear-gradient(90deg, #00f7ff33 0%);
     border-left: 3px solid var(--primary-color);
     align-self: flex-start;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 2px 8px 0 rgba(0,247,255,0.08);
 }
 
 .user-message {
@@ -286,26 +289,48 @@ body {
     transition: all 0.3s ease;
     font-size: 0.9rem;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
 }
 
-/* Efek underline saat hover */
 .nav-links a::after {
     content: '';
     position: absolute;
     width: 0;
-    height: 2px;
+    height: 3px;
     bottom: -4px;
     left: 0;
-    background: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     transition: width 0.3s ease;
+    border-radius: 2px;
 }
 
 .nav-links a:hover::after {
     width: 100%;
+}
+
+.nav-icon {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-right: 0.2em;
+}
+
+.profile-icon {
+    margin-left: 1.2rem;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.profile-icon:hover {
+    color: var(--secondary-color);
 }
 
 /* Styling khusus untuk Launch App */
@@ -526,4 +551,102 @@ body {
 .chart-context-header .last-price {
     color: var(--accent-color);
     font-weight: 600;
+}
+
+.symbol-search-input {
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--primary-color);
+    font-size: 1rem;
+    width: 160px;
+    margin-right: 0.5rem;
+    background: #10122a;
+    color: var(--primary-color);
+}
+
+.symbol-suggestions {
+    position: absolute;
+    background: #10122a;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    margin-top: 2.2rem;
+    list-style: none;
+    padding: 0;
+    z-index: 10;
+    width: 160px;
+    max-height: 180px;
+    overflow-y: auto;
+    display: none;
+}
+
+.symbol-suggestions li {
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+}
+
+.symbol-suggestions li:hover {
+    background: var(--primary-color);
+    color: #10122a;
+}
+
+.quick-suggestions {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.quick-suggestion {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px 0 rgba(0,247,255,0.08);
+    transition: background 0.2s, transform 0.2s;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quick-suggestion:hover {
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Loading spinner for chat */
+.chat-loading-spinner {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 3px solid #00f7ff44;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Chat input placeholder & focus */
+.chat-input::placeholder {
+    color: #8be9fdcc;
+    opacity: 1;
+    font-style: italic;
+}
+.chat-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+.chat-input.error {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 2px var(--danger-color);
 } 

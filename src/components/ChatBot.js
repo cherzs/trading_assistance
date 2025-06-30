@@ -8,7 +8,7 @@ export class ChatBot {
         this.options = {
             title: options.title || 'AI Trading Assistant',
             subtitle: options.subtitle || 'Your AI Assistant',
-            placeholder: options.placeholder || 'Type your message...',
+            placeholder: options.placeholder || 'Ask me anything about trading...',
             containerClass: options.containerClass || ''
         };
         
@@ -44,12 +44,17 @@ export class ChatBot {
         this.messagesContainer = document.createElement('div');
         this.messagesContainer.className = 'messages';
         
+        // Create quick suggestions
+        this.quickSuggestions = document.createElement('div');
+        this.quickSuggestions.className = 'quick-suggestions';
+        this.renderQuickSuggestions();
+        
         // Create form
         this.form = document.createElement('form');
         this.form.className = 'chat-form';
         
         this.input = document.createElement('input');
-        this.input.placeholder = this.options.placeholder;
+        this.input.placeholder = this.options.placeholder || 'Ask me anything about trading...';
         this.input.className = 'chat-input';
         
         this.submitButton = document.createElement('button');
@@ -63,7 +68,32 @@ export class ChatBot {
         // Assemble chat container
         this.chatContainer.appendChild(header);
         this.chatContainer.appendChild(this.messagesContainer);
+        this.chatContainer.appendChild(this.quickSuggestions);
         this.chatContainer.appendChild(this.form);
+    }
+
+    renderQuickSuggestions() {
+        // Clear previous
+        this.quickSuggestions.innerHTML = '';
+        const suggestions = [
+            { text: '📈 Show BTC analysis', value: 'Show BTC analysis' },
+            { text: '💡 How to set Stop Loss?', value: 'How to set Stop Loss?' },
+            { text: '🔍 Latest News', value: 'Latest News' }
+        ];
+        suggestions.forEach(s => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'quick-suggestion';
+            btn.textContent = s.text;
+            btn.onclick = () => this.handleQuickSuggestion(s.value);
+            this.quickSuggestions.appendChild(btn);
+        });
+    }
+
+    handleQuickSuggestion(value) {
+        if (this.isLoading) return;
+        this.input.value = value;
+        this.form.requestSubmit();
     }
 
     scrollToBottom() {
@@ -87,7 +117,7 @@ export class ChatBot {
         if (loading) {
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message ai';
-            loadingDiv.innerHTML = '<div class="typing-indicator">Typing...</div>';
+            loadingDiv.innerHTML = '<div class="typing-indicator">Typing... <span class="chat-loading-spinner"></span></div>';
             this.messagesContainer.appendChild(loadingDiv);
             this.loadingDiv = loadingDiv;
         } else if (this.loadingDiv) {
