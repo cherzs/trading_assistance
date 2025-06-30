@@ -1,7 +1,23 @@
 import { createChart } from 'lightweight-charts';
+import { createChartService } from '../services/chart.js';
 
 export class ChartComponent {
     constructor(container) {
+        if (!container) {
+            throw new Error('Container element is required');
+        }
+        this.container = container;
+        this.chartService = createChartService(container);
+        // Expose methods for symbol/timeframe change
+        this.setSymbol = (symbol) => this.chartService.setSymbol(symbol);
+        this.setTimeframe = (tf) => this.chartService.setTimeframe(tf);
+        this.onPriceUpdate = (cb) => this.chartService.onPriceUpdate(cb);
+        // Update price display on mount
+        this.chartService.updatePriceDisplay();
+        // Listen for price update to update display
+        this.chartService.onPriceUpdate(() => this.chartService.updatePriceDisplay());
+        window.addEventListener('resize', () => this.handleResize());
+
         // Chart options dengan warna yang disesuaikan
         const chartOptions = {
             layout: {
@@ -76,5 +92,14 @@ export class ChartComponent {
         
         this.candlestickSeries.setData(data);
         this.chart.timeScale().fitContent();
+    }
+
+    handleResize() {
+        this.chartService.resize();
+    }
+
+    destroy() {
+        this.chartService.destroy();
+        window.removeEventListener('resize', () => this.handleResize());
     }
 } 

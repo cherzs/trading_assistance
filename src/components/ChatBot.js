@@ -1,14 +1,14 @@
 import { sendMessage, resetChatHistory } from '../services/gemini.js';
 
 export class ChatBot {
-    constructor(containerId, options = {}) {
+    constructor(containerId = 'chatContainer', options = {}) {
         this.messages = [];
         this.isLoading = false;
         this.sessionId = Date.now().toString();
         this.options = {
-            title: options.title || 'AI Trading Assistant',
-            subtitle: options.subtitle || 'Your AI Assistant',
-            placeholder: options.placeholder || 'Ask me anything about trading...',
+            title: options.title || 'AI Trading Assistant 🚀',
+            subtitle: options.subtitle || 'Get instant trading insights and tips powered by AI.',
+            placeholder: options.placeholder || 'e.g. "Show ETH prediction"',
             containerClass: options.containerClass || ''
         };
         
@@ -28,7 +28,7 @@ export class ChatBot {
         }
 
         // Add initial message
-        this.addMessage("Halo! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
+        this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
     }
 
     initializeChatUI() {
@@ -54,8 +54,10 @@ export class ChatBot {
         this.form.className = 'chat-form';
         
         this.input = document.createElement('input');
-        this.input.placeholder = this.options.placeholder || 'Ask me anything about trading...';
+        this.input.placeholder = this.options.placeholder;
         this.input.className = 'chat-input';
+        this.input.type = 'text';
+        this.input.autocomplete = 'off';
         
         this.submitButton = document.createElement('button');
         this.submitButton.type = 'submit';
@@ -73,18 +75,17 @@ export class ChatBot {
     }
 
     renderQuickSuggestions() {
-        // Clear previous
         this.quickSuggestions.innerHTML = '';
         const suggestions = [
-            { text: '📈 Show BTC analysis', value: 'Show BTC analysis' },
-            { text: '💡 How to set Stop Loss?', value: 'How to set Stop Loss?' },
-            { text: '🔍 Latest News', value: 'Latest News' }
+            { icon: '📈', text: 'Show BTC analysis', value: 'Show BTC analysis', color: 'primary' },
+            { icon: '💡', text: 'How to set Stop Loss?', value: 'How to set Stop Loss?', color: 'info' },
+            { icon: '📰', text: 'Latest News', value: 'Latest News', color: 'warning' }
         ];
         suggestions.forEach(s => {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = 'quick-suggestion';
-            btn.textContent = s.text;
+            btn.className = `quick-suggestion quick-suggestion-${s.color}`;
+            btn.innerHTML = `<span>${s.icon}</span> <span>${s.text}</span>`;
             btn.onclick = () => this.handleQuickSuggestion(s.value);
             this.quickSuggestions.appendChild(btn);
         });
@@ -115,11 +116,14 @@ export class ChatBot {
         this.submitButton.textContent = loading ? 'Sending...' : 'Send';
         
         if (loading) {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'message ai';
-            loadingDiv.innerHTML = '<div class="typing-indicator">Typing... <span class="chat-loading-spinner"></span></div>';
-            this.messagesContainer.appendChild(loadingDiv);
-            this.loadingDiv = loadingDiv;
+            if (!this.loadingDiv) {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message ai';
+                loadingDiv.innerHTML = '<div class="typing-indicator">Typing... <span class="chat-loading-spinner"></span></div>';
+                this.messagesContainer.appendChild(loadingDiv);
+                this.loadingDiv = loadingDiv;
+                this.scrollToBottom();
+            }
         } else if (this.loadingDiv) {
             this.loadingDiv.remove();
             this.loadingDiv = null;
@@ -133,18 +137,14 @@ export class ChatBot {
     async handleSubmit(e) {
         e.preventDefault();
         const userMessage = this.input.value.trim();
-        
         if (!userMessage || this.isLoading) return;
-        
         this.input.value = '';
         this.setLoading(true);
         this.addMessage(userMessage, 'user');
-
         try {
             const data = await sendMessage(userMessage, this.sessionId);
             this.addMessage(data.response, 'ai');
         } catch (error) {
-            console.error('Error:', error);
             this.addMessage('Sorry, there was an error in communication with AI.', 'error');
         } finally {
             this.setLoading(false);

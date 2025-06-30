@@ -38,7 +38,7 @@
                     />
                     <ul id="symbolSuggestions" class="symbol-suggestions"></ul>
                     | <span class="timeframe" id="activeTimeframe">1H</span>
-                    | <span class="last-price" id="lastPrice">Last Price: $117</span>
+                    | <span class="last-price" id="lastPrice"><span class="live-dot"></span>Last Price: $117 <span class="price-up">▲</span></span>
                 </div>
                 <div class="chart-toolbar">
                     <div class="timeframe-selector">
@@ -125,23 +125,7 @@
             </div> -->
         </div>
 
-        <div class="chat-panel">
-            <div class="chat-header">
-                <i class="fas fa-robot"></i>
-                <h2>AI Trading Assistant</h2>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    Halo! I'm your AI Trading Assistant. What do you want to know about trading today?
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" id="userInput" placeholder="Ask something about trading...">
-                <button id="sendButton">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
+        <div id="chatContainer"></div>
     </div>
     <script type="module" src="/src/main.js"></script>
 </body>

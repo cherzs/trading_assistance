@@ -1,6 +1,6 @@
 export async function sendMessage(message, sessionId) {
     try {
-        const response = await fetch('http://localhost:5000/gemini-chat', {
+        const response = await fetch('/api/gemini-chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -8,20 +8,17 @@ export async function sendMessage(message, sessionId) {
             },
             body: JSON.stringify({
                 message: message,
-                session_id: sessionId
+                sessionId: sessionId
             })
         });
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'Network response was not ok');
         }
-
         const data = await response.json();
         if (!data.response) {
             throw new Error('Invalid response format from server');
         }
-
         return data;
     } catch (error) {
         console.error('Error sending message:', error);

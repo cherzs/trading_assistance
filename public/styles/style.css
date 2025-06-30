@@ -51,7 +51,8 @@ body {
 
 .main-container {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: row;
+    gap: 32px;
     padding: 1.2rem;
     height: calc(100vh - 4rem);
     align-items: flex-start;
@@ -194,10 +195,13 @@ body {
 }
 
 .message {
-    padding: 1rem;
-    border-radius: 10px;
-    max-width: 80%;
-    animation: fadeIn 0.3s ease;
+    padding: 16px 20px;
+    border-radius: 14px;
+    max-width: 70%;
+    font-size: 1em;
+    word-break: break-word;
+    margin-bottom: 0;
+    line-height: 1.6;
 }
 
 .bot-message {
@@ -286,7 +290,8 @@ body {
 .nav-links a {
     color: var(--text-gray);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
     font-size: 0.9rem;
     position: relative;
     display: flex;
@@ -295,7 +300,8 @@ body {
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
+    color: #0ff2ff;
+    border-bottom: 2px solid #0ff2ff;
 }
 
 .nav-links a::after {
@@ -592,31 +598,56 @@ body {
 
 .quick-suggestions {
     display: flex;
-    gap: 0.5rem;
-    margin: 0.5rem 0 0.5rem 0;
+    gap: 10px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
 }
 
 .quick-suggestion {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    font-size: 0.95rem;
-    cursor: pointer;
-    box-shadow: 0 2px 8px 0 rgba(0,247,255,0.08);
-    transition: background 0.2s, transform 0.2s;
-    outline: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 6px;
+    padding: 8px 16px;
+    background: linear-gradient(90deg, #7de2ff 0%, #0ff2ff 100%);
+    border: none;
+    border-radius: 20px;
+    color: #222b3a;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.97em;
+    margin-bottom: 4px;
+    box-shadow: 0 2px 8px 0 #0ff2ff22;
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 .quick-suggestion:hover {
-    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-    color: #fff;
-    transform: translateY(-2px) scale(1.05);
+    background: linear-gradient(90deg, #0ff2ff 0%, #7de2ff 100%);
+    box-shadow: 0 4px 16px 0 #0ff2ff44;
+}
+
+.quick-suggestion-primary {
+    background: linear-gradient(90deg, #0ff2ff 0%, #7de2ff 100%);
+    color: #222b3a;
+}
+.quick-suggestion-info {
+    background: linear-gradient(90deg, #7de2ff 0%, #0ff2ff 100%);
+    color: #222b3a;
+}
+.quick-suggestion-warning {
+    background: linear-gradient(90deg, #ffe066 0%, #ffd700 100%);
+    color: #222b3a;
+}
+.quick-suggestion-primary:hover {
+    background: linear-gradient(90deg, #7de2ff 0%, #0ff2ff 100%);
+    box-shadow: 0 4px 16px 0 #0ff2ff44;
+}
+.quick-suggestion-info:hover {
+    background: linear-gradient(90deg, #0ff2ff 0%, #7de2ff 100%);
+    box-shadow: 0 4px 16px 0 #0ff2ff44;
+}
+.quick-suggestion-warning:hover {
+    background: linear-gradient(90deg, #ffd700 0%, #ffe066 100%);
+    box-shadow: 0 4px 16px 0 #ffe06644;
 }
 
 /* Loading spinner for chat */
@@ -649,4 +680,176 @@ body {
 .chat-input.error {
     border-color: var(--danger-color);
     box-shadow: 0 0 0 2px var(--danger-color);
+}
+
+/* --- CHAT PANEL MODERN --- */
+#chatContainer, .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 500px;
+    background: rgba(20, 22, 34, 0.98);
+    border-radius: 18px;
+    box-shadow: 0 0 16px 0 #0ff2ff33;
+    padding: 24px 18px 18px 18px;
+    margin: 0 0 0 32px;
+    max-width: 420px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chat-header {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #222b3a;
+}
+
+.chat-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.chat-subtitle {
+    font-size: 1em;
+    color: #7de2ff;
+    margin-bottom: 8px;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    padding-right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 85%;
+    font-size: 1em;
+    word-break: break-word;
+    margin-bottom: 0;
+}
+.message.user {
+    background: linear-gradient(90deg, #0ff2ff 0%, #7de2ff 100%);
+    color: #222b3a;
+    align-self: flex-end;
+}
+.message.ai {
+    background: #23263a;
+    color: #fff;
+    align-self: flex-start;
+}
+.message.error {
+    background: #ff4d4f;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.chat-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 0;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #2e3a4d;
+    background: #181a28;
+    color: #fff;
+    font-size: 1em;
+    outline: none;
+    transition: border 0.2s;
+}
+.chat-input:focus {
+    border: 1.5px solid #0ff2ff;
+}
+
+.chat-submit {
+    padding: 0 22px;
+    background: linear-gradient(90deg, #0ff2ff 0%, #7de2ff 100%);
+    border: none;
+    border-radius: 8px;
+    color: #222b3a;
+    font-weight: 700;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.chat-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-loading-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #0ff2ff;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Last Price highlight + live indicator */
+.last-price {
+    font-weight: bold;
+    color: #1eea6b;
+    font-size: 1.1em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.last-price .live-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #1eea6b;
+    border-radius: 50%;
+    margin-right: 3px;
+    box-shadow: 0 0 6px 2px #1eea6b66;
+    animation: live-blink 1.2s infinite alternate;
+}
+@keyframes live-blink {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
+}
+.last-price .price-up {
+    color: #1eea6b;
+    font-size: 1.1em;
+    margin-left: 2px;
+}
+.last-price .price-down {
+    color: #ff4d4f;
+    font-size: 1.1em;
+    margin-left: 2px;
+}
+
+@media (max-width: 900px) {
+    #chatContainer, .chat-container {
+        max-width: 100%;
+        min-height: 320px;
+        padding: 12px 6px 8px 6px;
+        margin: 0;
+    }
+    .main-container {
+        flex-direction: column;
+        gap: 12px;
+    }
 } 
