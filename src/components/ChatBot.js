@@ -42,10 +42,10 @@ export class ChatBot {
         this.messagesContainer = document.createElement('div');
         this.messagesContainer.className = 'messages';
         
-        // Create quick suggestions
-        this.quickSuggestions = document.createElement('div');
-        this.quickSuggestions.className = 'quick-suggestions';
-        this.renderQuickSuggestions();
+        // Remove quick suggestions (do not create or append)
+        // this.quickSuggestions = document.createElement('div');
+        // this.quickSuggestions.className = 'quick-suggestions';
+        // this.renderQuickSuggestions();
         
         // Create form
         this.form = document.createElement('form');
@@ -65,34 +65,10 @@ export class ChatBot {
         this.form.appendChild(this.input);
         this.form.appendChild(this.submitButton);
         
-        // Assemble chat container
+        // Assemble chat container (do not append quickSuggestions)
         this.chatContainer.appendChild(header);
         this.chatContainer.appendChild(this.messagesContainer);
-        this.chatContainer.appendChild(this.quickSuggestions);
         this.chatContainer.appendChild(this.form);
-    }
-
-    renderQuickSuggestions() {
-        this.quickSuggestions.innerHTML = '';
-        const suggestions = [
-            { icon: '📈', text: 'Show BTC analysis', value: 'Show BTC analysis', color: 'primary' },
-            { icon: '💡', text: 'How to set Stop Loss?', value: 'How to set Stop Loss?', color: 'info' },
-            { icon: '📰', text: 'Latest News', value: 'Latest News', color: 'warning' }
-        ];
-        suggestions.forEach(s => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = `quick-suggestion quick-suggestion-${s.color}`;
-            btn.innerHTML = `<span>${s.icon}</span> <span>${s.text}</span>`;
-            btn.onclick = () => this.handleQuickSuggestion(s.value);
-            this.quickSuggestions.appendChild(btn);
-        });
-    }
-
-    handleQuickSuggestion(value) {
-        if (this.isLoading) return;
-        this.input.value = value;
-        this.form.requestSubmit();
     }
 
     scrollToBottom() {
