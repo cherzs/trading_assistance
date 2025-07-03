@@ -4,12 +4,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node src/server/server.js",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@google/genai": "^1.7.0",
     "@google/generative-ai": "^0.24.1",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",

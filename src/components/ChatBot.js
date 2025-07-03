@@ -12,19 +12,17 @@ export class ChatBot {
             containerClass: options.containerClass || ''
         };
         
-        // Initialize DOM elements
-        this.chatContainer = document.createElement('div');
-        this.chatContainer.className = `chat-container ${this.options.containerClass}`;
-        this.initializeChatUI();
-        
-        // Event listeners
-        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-        this.input.addEventListener('input', (e) => this.handleInput(e));
-
-        // Add to specified container
-        const container = document.getElementById(containerId);
-        if (container) {
-            container.appendChild(this.chatContainer);
+        // Get the existing container instead of creating a new one
+        this.chatContainer = document.getElementById(containerId);
+        if (this.chatContainer) {
+            this.chatContainer.className = `chat-container ${this.options.containerClass}`;
+            this.initializeChatUI();
+            
+            // Event listeners
+            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+            this.input.addEventListener('input', (e) => this.handleInput(e));
+        } else {
+            console.error(`Container with id ${containerId} not found`);
         }
 
         // Add initial message

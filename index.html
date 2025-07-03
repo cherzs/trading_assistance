@@ -9,10 +9,6 @@
     <link rel="stylesheet" href="/styles/landing.css">
 </head>
 <body>
-    <div class="chat-layout">
-        <div id="topChatContainer"></div>
-        <div id="bottomChatContainer"></div>
-    </div>
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-chart-line"></i>
@@ -167,23 +163,15 @@
             <p>&copy; 2024 Trading Assistant. All rights reserved.</p>
         </div>
     </footer>
-    <!-- <script type="module">
+    <script type="module">
         import { ChatBot } from './src/components/ChatBot.js';
 
-        // Inisialisasi chatbox pertama (di atas)
-        const topChat = new ChatBot('topChatContainer', {
+        // Initialize single chat instance
+        const chat = new ChatBot('chatContainer', {
             title: 'AI Trading Assistant',
-            subtitle: 'Your AI Assistant',
-            containerClass: 'top-chat'
-        });
-
-        // Inisialisasi chatbox kedua (di bawah)
-        const bottomChat = new ChatBot('bottomChatContainer', {
-            title: 'AI Trading Assistant',
-            subtitle: 'Ask something about trading...',
-            containerClass: 'bottom-chat',
+            subtitle: 'Get instant trading insights and tips powered by AI.',
             placeholder: 'Ask something about trading...'
         });
-    </script> -->
+    </script>
 </body>
 </html>
