@@ -6,30 +6,37 @@ export class ChatBot {
         this.isLoading = false;
         this.sessionId = Date.now().toString();
         this.options = {
-            title: options.title || 'AI Trading Assistant 🚀',
+            title: options.title || 'AI Trading Assistant',
             subtitle: options.subtitle || 'Get instant trading insights and tips powered by AI.',
             placeholder: options.placeholder || 'e.g. "Show ETH prediction"',
             containerClass: options.containerClass || ''
         };
         
-        // Get the existing container instead of creating a new one
+        console.log(`Initializing ChatBot with container: ${containerId}`);
+        
+        // Get the existing container
         this.chatContainer = document.getElementById(containerId);
         if (this.chatContainer) {
+            console.log('Chat container found, initializing UI...');
             this.chatContainer.className = `chat-container ${this.options.containerClass}`;
             this.initializeChatUI();
             
             // Event listeners
             this.form.addEventListener('submit', (e) => this.handleSubmit(e));
             this.input.addEventListener('input', (e) => this.handleInput(e));
+            
+            // Add initial message
+            this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
+            console.log('ChatBot initialized successfully');
         } else {
             console.error(`Container with id ${containerId} not found`);
         }
-
-        // Add initial message
-        this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
     }
 
     initializeChatUI() {
+        // Clear any existing content
+        this.chatContainer.innerHTML = '';
+        
         // Create header
         const header = document.createElement('div');
         header.className = 'chat-header';
@@ -41,11 +48,6 @@ export class ChatBot {
         // Create messages container
         this.messagesContainer = document.createElement('div');
         this.messagesContainer.className = 'messages';
-        
-        // Remove quick suggestions (do not create or append)
-        // this.quickSuggestions = document.createElement('div');
-        // this.quickSuggestions.className = 'quick-suggestions';
-        // this.renderQuickSuggestions();
         
         // Create form
         this.form = document.createElement('form');
@@ -65,10 +67,12 @@ export class ChatBot {
         this.form.appendChild(this.input);
         this.form.appendChild(this.submitButton);
         
-        // Assemble chat container (do not append quickSuggestions)
+        // Assemble chat container
         this.chatContainer.appendChild(header);
         this.chatContainer.appendChild(this.messagesContainer);
         this.chatContainer.appendChild(this.form);
+        
+        console.log('Chat UI elements created and assembled');
     }
 
     scrollToBottom() {
@@ -81,6 +85,7 @@ export class ChatBot {
         messageDiv.textContent = text;
         this.messagesContainer.appendChild(messageDiv);
         this.scrollToBottom();
+        console.log(`Message added: ${sender} - ${text.substring(0, 50)}...`);
     }
 
     setLoading(loading) {
@@ -112,14 +117,18 @@ export class ChatBot {
         e.preventDefault();
         const userMessage = this.input.value.trim();
         if (!userMessage || this.isLoading) return;
+        
+        console.log(`Sending message: ${userMessage}`);
         this.input.value = '';
         this.setLoading(true);
         this.addMessage(userMessage, 'user');
+        
         try {
             const data = await sendMessage(userMessage, this.sessionId);
             this.addMessage(data.response, 'ai');
         } catch (error) {
-            this.addMessage('Sorry, there was an error in communication with AI.', 'error');
+            console.error('Chat error:', error);
+            this.addMessage('Sorry, there was an error in communication with AI. Please try again.', 'error');
         } finally {
             this.setLoading(false);
         }
@@ -151,9 +160,10 @@ export class ChatBot {
     resetChat() {
         // Clear chat UI
         this.messagesContainer.innerHTML = '';
-        // Reset chat history di service
+        // Reset chat history in service
         resetChatHistory();
-        // Tambahkan pesan selamat datang baru
-        this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'bot');
+        // Add welcome message
+        this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
+        console.log('Chat reset completed');
     }
 } 
