@@ -44,28 +44,31 @@ binanceWs.connect();
 const geminiChat = new GeminiChat();
 
 // Authentication Routes
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+app.get('/auth/google', (req, res, next) => {
+    console.log('🔐 Google OAuth initiated from:', req.headers.referer);
+    next();
+}, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    async (req, res) => {
-        try {
-            const token = generateToken(req.user);
-            // Redirect to frontend with token
-            res.redirect(`${process.env.CORS_ORIGIN || 'http://localhost:5173'}?token=${token}&user=${encodeURIComponent(JSON.stringify({
-                id: req.user.id,
-                name: req.user.name,
-                email: req.user.email,
-                picture: req.user.picture
-            }))}`);
-        } catch (error) {
-            console.error('Callback error:', error);
-            res.redirect('/login?error=auth_failed');
-        }
+app.get('/auth/google/callback', (req, res, next) => {
+    console.log('🔐 Google OAuth callback received');
+    next();
+}, passport.authenticate('google', { failureRedirect: '/login' }), async (req, res) => {
+    try {
+        console.log('🔐 OAuth successful for user:', req.user.email);
+        const token = generateToken(req.user);
+        const redirectUrl = `${process.env.CORS_ORIGIN || 'http://localhost:5173'}?token=${token}&user=${encodeURIComponent(JSON.stringify({
+            id: req.user.id,
+            name: req.user.name,
+            email: req.user.email,
+            picture: req.user.picture
+        }))}`;
+        console.log('🔐 Redirecting to:', redirectUrl);
+        res.redirect(redirectUrl);
+    } catch (error) {
+        console.error('Callback error:', error);
+        res.redirect('/login?error=auth_failed');
     }
-);
+});
 
 app.post('/auth/logout', (req, res) => {
     req.logout((err) => {
@@ -283,9 +286,99 @@ app.get('/api/symbols', async (req, res) => {
     }
 });
 
-// Add legacy /symbols endpoint (redirect to /api/symbols)
-app.get('/symbols', (req, res) => {
-    res.redirect('/api/symbols');
+// Add legacy /symbols endpoint (return data directly instead of redirecting)
+app.get('/symbols', async (req, res) => {
+    try {
+        console.log('[Server] Loading symbols from CoinMarketCap API (legacy endpoint)...');
+        
+        const apiKey = process.env.VITE_COINMARKETCAP_API_KEY || "b5d8b711-5d50-4eb4-8d50-7b89bf246372";
+        
+        const headers = {
+            'X-CMC_PRO_API_KEY': apiKey,
+            'Accept': 'application/json',
+            'Accept-Encoding': 'deflate, gzip'
+        };
+        
+        const response = await fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=100&convert=USD&sort=market_cap', { headers });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data || !data.data) {
+            throw new Error('Invalid response from CoinMarketCap listings API');
+        }
+
+        const symbols = [];
+
+        // Create symbols from active listings
+        data.data.forEach(crypto => {
+            // Main USD pair
+            symbols.push({
+                symbol: `${crypto.symbol}/USD`,
+                full_name: `CMC:${crypto.symbol}/USD`,
+                description: `${crypto.name} (${crypto.symbol})`,
+                exchange: 'CMC',
+                type: 'crypto',
+                id: crypto.id,
+                name: crypto.name,
+                market_cap: crypto.quote.USD.market_cap,
+                price: crypto.quote.USD.price,
+                rank: crypto.cmc_rank
+            });
+
+            // Add popular quote currencies for top 20
+            if (crypto.cmc_rank <= 20) {
+                const quoteCurrencies = ['EUR', 'BTC', 'ETH'];
+                quoteCurrencies.forEach(quote => {
+                    if (quote !== crypto.symbol) {
+                        symbols.push({
+                            symbol: `${crypto.symbol}/${quote}`,
+                            full_name: `CMC:${crypto.symbol}/${quote}`,
+                            description: `${crypto.name} to ${quote}`,
+                            exchange: 'CMC',
+                            type: 'crypto',
+                            id: crypto.id,
+                            name: crypto.name,
+                            rank: crypto.cmc_rank
+                        });
+                    }
+                });
+            }
+        });
+
+        // Sort by market cap rank
+        symbols.sort((a, b) => (a.rank || 999999) - (b.rank || 999999));
+
+        console.log(`[Server] Loaded ${symbols.length} symbols from CoinMarketCap (legacy endpoint)`);
+        
+        res.json({ 
+            symbols,
+            count: symbols.length,
+            source: 'CoinMarketCap Pro API (legacy endpoint)'
+        });
+    } catch (error) {
+        console.error('[Server] Error fetching symbols (legacy endpoint):', error);
+        
+        // Fallback symbols
+        const fallbackSymbols = [
+            { symbol: 'BTC/USD', full_name: 'CMC:BTC/USD', description: 'Bitcoin (BTC)', exchange: 'CMC', type: 'crypto', id: 1, name: 'Bitcoin', rank: 1, price: 115000 },
+            { symbol: 'ETH/USD', full_name: 'CMC:ETH/USD', description: 'Ethereum (ETH)', exchange: 'CMC', type: 'crypto', id: 1027, name: 'Ethereum', rank: 2, price: 3600 },
+            { symbol: 'USDT/USD', full_name: 'CMC:USDT/USD', description: 'Tether (USDT)', exchange: 'CMC', type: 'crypto', id: 825, name: 'Tether', rank: 3, price: 1.0 },
+            { symbol: 'BNB/USD', full_name: 'CMC:BNB/USD', description: 'BNB (BNB)', exchange: 'CMC', type: 'crypto', id: 1839, name: 'BNB', rank: 4, price: 350 },
+            { symbol: 'SOL/USD', full_name: 'CMC:SOL/USD', description: 'Solana (SOL)', exchange: 'CMC', type: 'crypto', id: 5426, name: 'Solana', rank: 5, price: 120 },
+            { symbol: 'XRP/USD', full_name: 'CMC:XRP/USD', description: 'XRP (XRP)', exchange: 'CMC', type: 'crypto', id: 52, name: 'XRP', rank: 7, price: 3.0 }
+        ];
+        
+        res.status(500).json({ 
+            error: 'Failed to fetch symbols',
+            symbols: fallbackSymbols,
+            count: fallbackSymbols.length,
+            source: 'Fallback data (legacy endpoint)'
+        });
+    }
 });
 
 // Basic test endpoint
@@ -293,6 +386,15 @@ app.get('/api/test', (req, res) => {
     res.json({ 
         status: 'ok', 
         message: 'Trading Assistant API is running',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Test auth endpoint (no authentication required)
+app.get('/auth/test', (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        message: 'Auth routes are accessible',
         timestamp: new Date().toISOString()
     });
 });
