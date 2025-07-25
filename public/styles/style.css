@@ -1,15 +1,24 @@
+/* ==================== IMPROVED CONTRAST & READABILITY ==================== */
+
 :root {
     --primary-color: #00f7ff;
-    --secondary-color: #9d00ff;
+    --secondary-color: #7c3aed; /* Lebih soft dari neon pink */
     --accent-color: #00ff88;
     --background-dark: #0a0b1e;
     --card-dark: #141432;
     --text-light: #ffffff;
-    --text-gray: #8890b5;
+    --text-gray: #a0a9c0; /* Lebih terang untuk readability */
+    --text-muted: #6b7280; /* Untuk placeholder */
     --success-color: #00ff88;
     --danger-color: #ff0055;
     --glow-primary: 0 0 10px #00f7ff, 0 0 20px #00f7ff40;
-    --glow-secondary: 0 0 10px #9d00ff, 0 0 20px #9d00ff40;
+    --glow-secondary: 0 0 10px #7c3aed, 0 0 20px #7c3aed40;
+    
+    /* Enhanced color palette for better contrast */
+    --surface-primary: #1a1b3a; /* Slightly lighter for better contrast */
+    --surface-secondary: #252752;
+    --border-subtle: rgba(160, 169, 192, 0.15);
+    --border-emphasis: rgba(0, 247, 255, 0.3);
 }
 
 * {
@@ -47,6 +56,16 @@ body {
     gap: 0.5rem;
     color: var(--primary-color);
     text-shadow: var(--glow-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.logo:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 0 15px #00f7ff, 0 0 30px #00f7ff60;
+    background: rgba(0, 247, 255, 0.1);
 }
 
 .nav-links {
@@ -85,38 +104,161 @@ body {
     font-size: 1.5rem;
 }
 
-.main-container {
+/* Authentication Styles */
+.auth-login-btn {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(45deg, #4285f4, #34a853);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
     display: flex;
-    flex-direction: row;
-    gap: 32px;
-    padding: 1.2rem;
-    height: calc(100vh - 4rem);
-    align-items: flex-start;
-    min-height: 0;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
 }
 
-.trading-panel {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    height: 100%;
-    min-height: 0;
+.auth-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
 }
 
-.chart-section {
-    background: var(--card-dark);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 1px solid rgba(0, 247, 255, 0.1);
-    box-shadow: var(--glow-primary);
-    height: 100%;
-    width: 100%;
+.user-profile {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
 }
+
+.user-avatar {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    background: rgba(20, 20, 50, 0.8);
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+    background: rgba(0, 247, 255, 0.1);
+    border-color: var(--primary-color);
+}
+
+.user-avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-avatar .user-name {
+    font-weight: 500;
+    color: var(--text-light);
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    transition: transform 0.3s ease;
+}
+
+.user-avatar:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: var(--card-dark);
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    min-width: 280px;
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownSlide 0.3s ease-out;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 247, 255, 0.05);
+}
+
+.dropdown-header img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info .user-name {
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.user-info .user-email {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(0, 247, 255, 0.2);
+    margin: 0;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background: rgba(0, 247, 255, 0.1);
+}
+
+.dropdown-item.logout {
+    color: var(--danger-color);
+}
+
+.dropdown-item.logout:hover {
+    background: rgba(255, 0, 85, 0.1);
+}
+
+/* Old styles removed - using compact layout system */
 
 .chart-context-header {
     display: flex;
@@ -310,67 +452,34 @@ body {
     overflow: hidden;
 }
 
-/* Chat Container Styles */
-#chatContainer {
-    flex: 1;
-    min-width: 400px;
-    max-width: 500px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-container {
-    background: var(--card-dark);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 1px solid rgba(157, 0, 255, 0.1);
-    box-shadow: var(--glow-secondary);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-.chat-header {
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-.chat-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--secondary-color);
-    margin-bottom: 0.5rem;
-    text-shadow: var(--glow-secondary);
-}
-
-.chat-subtitle {
-    color: var(--text-gray);
-    font-size: 0.9rem;
-}
+/* Old chat styles removed - using compact system */
 
 .messages {
     flex: 1;
     overflow-y: auto;
-    margin-bottom: 1rem;
-    padding: 0.5rem 0;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .message {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
-    max-width: 85%;
+    padding: 1.5rem;
+    border-radius: 16px;
+    max-width: 90%;
     word-wrap: break-word;
+    line-height: 1.6;
+    font-size: 0.95rem;
     animation: messageSlide 0.3s ease-out;
+    position: relative;
 }
 
 @keyframes messageSlide {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
@@ -379,34 +488,80 @@ body {
 }
 
 .message.user {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
     margin-left: auto;
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 247, 255, 0.2);
 }
 
 .message.ai {
-    background: rgba(20, 20, 50, 0.8);
+    background: rgba(20, 20, 50, 0.9);
     border: 1px solid rgba(157, 0, 255, 0.3);
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 8px;
+    color: var(--text-light);
+    margin-right: auto;
+    box-shadow: 0 4px 12px rgba(157, 0, 255, 0.1);
+}
+
+.message.ai h3, .message.ai h4 {
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.message.ai p {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.message.ai ul, .message.ai ol {
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+}
+
+.message.ai li {
+    margin: 0.4rem 0;
+    line-height: 1.5;
+}
+
+.message.ai strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.message.ai em {
+    color: var(--text-gray);
+    font-style: italic;
+}
+
+.message.ai code {
+    background: rgba(0, 247, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    color: var(--primary-color);
 }
 
 .message.error {
     background: rgba(255, 0, 85, 0.1);
     border: 1px solid var(--danger-color);
     color: var(--danger-color);
+    margin-right: auto;
 }
 
 .typing-indicator {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
     color: var(--text-gray);
+    font-style: italic;
 }
 
 .chat-loading-spinner {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border: 2px solid rgba(157, 0, 255, 0.3);
     border-top: 2px solid var(--secondary-color);
     border-radius: 50%;
@@ -418,55 +573,45 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.chat-form {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: auto;
-}
+/* Old chat-form removed - using compact version */
 
 .chat-input {
     flex: 1;
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.2rem;
     background: rgba(20, 20, 50, 0.8);
     border: 1px solid rgba(157, 0, 255, 0.3);
     border-radius: 25px;
     color: var(--text-light);
     outline: none;
-    font-size: 0.9rem;
-    transition: border-color 0.3s ease;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
 }
 
 .chat-input:focus {
     border-color: var(--secondary-color);
-    box-shadow: 0 0 0 2px rgba(157, 0, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(157, 0, 255, 0.1);
+    background: rgba(20, 20, 50, 0.95);
 }
 
 .chat-input::placeholder {
     color: var(--text-gray);
 }
 
-.chat-submit {
-    padding: 0.8rem 1.5rem;
-    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
-    border: none;
-    border-radius: 25px;
-    color: white;
-    cursor: pointer;
-    font-weight: 500;
-    transition: transform 0.3s ease;
-    min-width: 80px;
-}
-
-.chat-submit:hover:not(:disabled) {
-    transform: translateY(-2px);
-}
-
-.chat-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+/* Old chat-submit removed - using compact version */
 
 /* Responsive Design */
+@media (max-width: 1400px) {
+    .main-container {
+        gap: 16px;
+    }
+    
+    #chatContainer {
+        min-width: 450px;
+        max-width: 550px;
+    }
+}
+
 @media (max-width: 1200px) {
     .main-container {
         flex-direction: column;
@@ -475,15 +620,15 @@ body {
     }
     
     .trading-panel {
-        height: 60vh;
+        height: 55vh;
         min-height: 400px;
     }
     
     #chatContainer {
         min-width: 100%;
         max-width: 100%;
-        height: 40vh;
-        min-height: 300px;
+        height: 45vh;
+        min-height: 350px;
     }
 }
 
@@ -491,6 +636,19 @@ body {
     .main-container {
         padding: 0.8rem;
         gap: 1rem;
+    }
+    
+    .chat-container {
+        padding: 1.5rem;
+    }
+    
+    .chat-title {
+        font-size: 1.5rem;
+    }
+    
+    .message {
+        padding: 1.2rem;
+        font-size: 0.9rem;
     }
     
     .chart-context-header {
@@ -522,21 +680,36 @@ body {
     .nav-links {
         gap: 1rem;
     }
+    
+    /* Mobile auth button adjustments */
+    .user-avatar .user-name {
+        display: none;
+    }
+    
+    .user-dropdown {
+        right: -20px;
+        min-width: 260px;
+    }
+    
+    .auth-login-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
 }
 
 /* Scrollbar Styles */
 .messages::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .messages::-webkit-scrollbar-track {
     background: rgba(20, 20, 50, 0.5);
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .messages::-webkit-scrollbar-thumb {
     background: rgba(157, 0, 255, 0.5);
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .messages::-webkit-scrollbar-thumb:hover {
@@ -559,4 +732,3959 @@ body {
 
 .symbol-suggestions::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 247, 255, 0.8);
+}
+
+/* Enhanced Symbol Suggestions with CoinMarketCap data */
+.symbol-suggestions li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+}
+
+.symbol-suggestions li:hover {
+    background: rgba(0, 247, 255, 0.1);
+    transform: translateX(2px);
+}
+
+.symbol-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+}
+
+.symbol-info .symbol {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+}
+
+.symbol-info .rank {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    color: var(--bg-dark);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    min-width: 32px;
+    text-align: center;
+}
+
+.symbol-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+}
+
+.symbol-details .name {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+.symbol-details .price {
+    color: var(--success-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: 'Monaco', 'Consolas', monospace;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .symbol-suggestions li {
+        padding: 0.6rem 0.8rem;
+        flex-direction: column;
+        align-items: flex-start;
+    gap: 0.4rem;
+}
+
+    .symbol-details {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .symbol-details .name {
+        text-align: left;
+    }
+}
+
+/* ==================== TRADINGVIEW-STYLE SYMBOL SEARCH ==================== */
+.symbol-search-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.symbol-search-wrapper {
+    position: relative;
+}
+
+.symbol-search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.symbol-search-input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    background: rgba(18, 18, 18, 0.95);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.symbol-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 247, 255, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.8rem;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    z-index: 2;
+}
+
+.search-spinner {
+    position: absolute;
+    right: 0.8rem;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.symbol-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    max-height: 500px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.symbol-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+}
+
+.dropdown-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dropdown-tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 6px;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-tab.active,
+.dropdown-tab:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border-color: var(--primary-color);
+}
+
+.dropdown-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.symbol-list {
+    padding: 0.5rem 0;
+}
+
+.symbol-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.symbol-item:hover,
+.symbol-item.selected {
+    background: rgba(0, 247, 255, 0.1);
+    border-left-color: var(--primary-color);
+}
+
+.symbol-info {
+    flex: 1;
+}
+
+.symbol-main {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.symbol-code {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.symbol-rank {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    color: var(--bg-dark);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.symbol-name {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    margin-bottom: 0.1rem;
+}
+
+.symbol-exchange {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.symbol-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.symbol-price .price {
+    color: var(--success-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.add-icon {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.symbol-item:hover .add-icon {
+    opacity: 1;
+}
+
+.no-results {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-gray);
+}
+
+.no-results i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.suggestion {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+.dropdown-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid rgba(157, 0, 255, 0.2);
+    background: rgba(18, 18, 18, 0.5);
+}
+
+.results-count {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+}
+
+.powered-by {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+/* ==================== TRADINGVIEW-STYLE TOOLBAR ==================== */
+.trading-toolbar {
+    background: var(--bg-dark);
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+    padding: 0.5rem 1rem;
+}
+
+.toolbar-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.toolbar-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.section-header:hover {
+    background: rgba(0, 247, 255, 0.1);
+}
+
+.section-header i {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.section-header span {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.expand-icon {
+    font-size: 0.7rem !important;
+    transition: transform 0.2s ease;
+}
+
+.section-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--bg-dark);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    min-width: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 0.8rem;
+}
+
+/* Chart Types */
+.chart-types .section-content {
+    position: static;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-type-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.8rem;
+    background: transparent;
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 6px;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chart-type-btn.active,
+.chart-type-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border-color: var(--primary-color);
+}
+
+.chart-type-btn i {
+    font-size: 0.9rem;
+}
+
+/* Drawing Tools */
+.tool-category {
+    margin-bottom: 1rem;
+}
+
+.category-header {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+}
+
+.category-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.drawing-tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.drawing-tool-btn:hover,
+.drawing-tool-btn.active {
+    background: rgba(0, 247, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.drawing-tool-btn i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Indicators */
+.indicator-category {
+    margin-bottom: 1rem;
+}
+
+.category-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.indicator-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.6rem 0.8rem;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.indicator-btn:hover,
+.indicator-btn.active {
+    background: rgba(0, 247, 255, 0.1);
+}
+
+.indicator-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.indicator-full {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    margin-top: 0.1rem;
+}
+
+/* Timeframes */
+.timeframes .section-content {
+    position: static;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.timeframe-btn {
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 4px;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.timeframe-btn.active,
+.timeframe-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border-color: var(--primary-color);
+}
+
+/* Settings */
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.setting-item label {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.setting-select {
+    padding: 0.3rem 0.5rem;
+    background: rgba(18, 18, 18, 0.8);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+}
+
+.setting-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+/* Active Tool Info */
+.active-tool-info {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 247, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+}
+
+.tool-name {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.tool-cancel {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 0, 85, 0.2);
+    border: 1px solid var(--danger-color);
+    border-radius: 4px;
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tool-cancel:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* Alerts */
+.alerts-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 200px;
+}
+
+.add-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(0, 247, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-alert:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+}
+
+.alert-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.8rem;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid #ffc107;
+}
+
+.alert-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.alert-price {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.alert-symbol {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+}
+
+.alert-remove {
+    background: transparent;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.alert-remove:hover {
+    background: rgba(255, 0, 85, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .toolbar-main {
+    gap: 1rem;
+    }
+    
+    .section-header span {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .trading-toolbar {
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .toolbar-main {
+        gap: 0.5rem;
+    }
+    
+    .chart-type-btn span,
+    .timeframe-btn {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .section-content {
+        min-width: 180px;
+    max-height: 300px;
+    }
+}
+
+/* ==================== CHART CONTROLS OVERLAY ==================== */
+.chart-controls-overlay {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.chart-controls-left,
+.chart-controls-right {
+    display: flex;
+    gap: 0.5rem;
+    pointer-events: auto;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 6px;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.control-btn:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.control-btn i {
+    font-size: 0.9rem;
+}
+
+/* Price info styling */
+.price-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.chart-context-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: rgba(18, 18, 18, 0.95);
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+}
+
+/* Enhanced chart section */
+.chart-section {
+    position: relative;
+    background: var(--bg-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(157, 0, 255, 0.2);
+}
+
+#chartContainer {
+    position: relative;
+    background: var(--bg-dark);
+}
+
+/* Main container adjustments */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+    gap: 0;
+}
+
+.trading-panel {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.chart-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Loading states and animations */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-gray);
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chart-loading i {
+    font-size: 2rem;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Chart error state */
+.chart-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--danger-color);
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.chart-error i {
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+.chart-error .error-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.chart-error .error-details {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
+.retry-btn {
+    padding: 0.8rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+.retry-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 247, 255, 0.3);
+}
+
+/* Responsive layout */
+@media (max-width: 1024px) {
+    .trading-panel {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .chart-section {
+        height: 400px;
+    }
+    
+    .chart-context-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .price-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .trading-panel {
+        padding: 0.5rem;
+    }
+    
+    .chart-context-header {
+        padding: 0.8rem;
+    }
+    
+    .chart-controls-overlay {
+        top: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .control-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .control-btn i {
+    font-size: 0.8rem;
+}
+
+    .symbol-search-container {
+        max-width: 100%;
+    }
+} 
+
+/* ==================== ENHANCED ANIMATIONS & VISUAL EFFECTS ==================== */
+
+/* Smooth page transitions */
+* {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced loading animation */
+@keyframes chartPulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(0, 247, 255, 0.3),
+                    0 0 40px rgba(0, 247, 255, 0.1);
+    }
+    50% { 
+        box-shadow: 0 0 30px rgba(0, 247, 255, 0.5),
+                    0 0 60px rgba(0, 247, 255, 0.2);
+    }
+}
+
+/* Enhanced glow effects */
+.chart-section {
+    animation: chartPulse 3s ease-in-out infinite;
+}
+
+/* Improved button hover effects */
+.chart-type-btn, .timeframe-btn, .drawing-tool-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-type-btn::before, .timeframe-btn::before, .drawing-tool-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.chart-type-btn:hover::before, .timeframe-btn:hover::before, .drawing-tool-btn:hover::before {
+    left: 100%;
+}
+
+/* Enhanced dropdown animations */
+.symbol-dropdown, .section-content {
+    animation: dropdownEnhanced 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdownEnhanced {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Enhanced price update animation */
+.price-update {
+    animation: priceUpdateEnhanced 1s ease-out;
+}
+
+@keyframes priceUpdateEnhanced {
+    0% { 
+        background: rgba(0, 247, 255, 0.4);
+        transform: scale(1.02);
+    }
+    50% {
+        background: rgba(0, 247, 255, 0.2);
+    }
+    100% { 
+        background: transparent;
+        transform: scale(1);
+    }
+}
+
+/* Enhanced symbol search with typing effect */
+.symbol-search-input:focus {
+    box-shadow: 
+        0 0 0 2px rgba(0, 247, 255, 0.3),
+        0 0 20px rgba(0, 247, 255, 0.1),
+        inset 0 0 0 1px rgba(0, 247, 255, 0.2);
+}
+
+/* ==================== IMPROVED MOBILE RESPONSIVENESS ==================== */
+
+/* Enhanced mobile breakpoints */
+@media (max-width: 480px) {
+    .trading-toolbar {
+        padding: 0.2rem 0.3rem;
+        flex-wrap: wrap;
+    }
+    
+    .toolbar-main {
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    
+    .section-header {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .chart-type-btn, .timeframe-btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+        min-width: 35px;
+    }
+    
+    .symbol-search-input {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.8rem 0.5rem 2rem;
+}
+
+.chart-context-header {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .last-price {
+        font-size: 0.8rem;
+    }
+}
+
+/* Tablet improvements */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .main-container {
+        padding: 0.8rem;
+    }
+    
+    .chart-section {
+        min-height: 450px;
+    }
+    
+    .trading-toolbar {
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* ==================== ENHANCED VISUAL HIERARCHY ==================== */
+
+/* Better spacing and typography */
+.section-header {
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.symbol-search-container {
+    box-shadow: 0 4px 12px rgba(0, 247, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chart-section {
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(0, 247, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.chat-container {
+    box-shadow: 
+        0 8px 32px rgba(157, 0, 255, 0.2),
+        0 0 0 1px rgba(157, 0, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+/* Hardware acceleration for animations */
+.symbol-dropdown,
+.section-content,
+.chart-type-btn,
+.timeframe-btn,
+.drawing-tool-btn,
+.control-btn {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Optimized scrollbars */
+.symbol-list::-webkit-scrollbar,
+.messages::-webkit-scrollbar {
+    width: 6px;
+    background: rgba(20, 20, 50, 0.3);
+}
+
+.symbol-list::-webkit-scrollbar-thumb,
+.messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 247, 255, 0.5),
+        rgba(157, 0, 255, 0.5)
+    );
+    border-radius: 3px;
+}
+
+/* ==================== ACCESSIBILITY IMPROVEMENTS ==================== */
+
+/* Focus indicators */
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #00ffff;
+        --secondary-color: #ff00ff;
+        --text-gray: #cccccc;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==================== ENHANCED ERROR STATES ==================== */
+
+.error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--danger-color);
+    background: rgba(255, 0, 85, 0.05);
+    border: 1px solid rgba(255, 0, 85, 0.2);
+    border-radius: 12px;
+    margin: 1rem;
+}
+
+.error-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.error-state h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.error-state p {
+    margin-bottom: 1.5rem;
+    color: var(--text-gray);
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+/* ==================== LOADING STATES ==================== */
+
+.loading-skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(20, 20, 50, 0.8) 25%,
+        rgba(0, 247, 255, 0.1) 50%,
+        rgba(20, 20, 50, 0.8) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.chart-loading-skeleton {
+    height: 400px;
+    margin: 1rem;
+}
+
+.toolbar-loading-skeleton {
+    height: 60px;
+    margin: 0.5rem;
+}
+
+/* ==================== ENHANCED TOOLTIPS ==================== */
+
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 50, 0.95);
+    color: var(--text-light);
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    z-index: 1000;
+    margin-bottom: 5px;
+}
+
+[data-tooltip]::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(20, 20, 50, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+    opacity: 1;
+}
+
+/* ==================== STATUS INDICATORS ==================== */
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-indicator.online {
+    background: var(--success-color);
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.offline {
+    background: var(--danger-color);
+}
+
+.status-indicator.loading {
+    background: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+/* ==================== ENHANCED CONTEXT MENUS ==================== */
+
+.context-menu {
+    position: fixed;
+    background: var(--card-dark);
+    border: 1px solid rgba(0, 247, 255, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+    min-width: 200px;
+    padding: 0.5rem 0;
+    animation: contextMenuSlide 0.2s ease-out;
+}
+
+@keyframes contextMenuSlide {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-5px);
+    }
+    to {
+    opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.context-menu-item:hover {
+    background: rgba(0, 247, 255, 0.1);
+}
+
+.context-menu-item i {
+    width: 16px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.context-menu-divider {
+    height: 1px;
+    background: rgba(0, 247, 255, 0.2);
+    margin: 0.5rem 0;
+}
+
+/* ==================== NOTIFICATION ANIMATIONS ==================== */
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* ==================== ENHANCED BUTTON EFFECTS ==================== */
+
+.retry-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.retry-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.retry-btn:hover::before {
+    left: 100%;
+}
+
+/* ==================== IMPROVED FOCUS MANAGEMENT ==================== */
+
+.symbol-search-input:focus,
+.chat-input:focus {
+    position: relative;
+    z-index: 10;
+}
+
+/* ==================== ENHANCED MOBILE EXPERIENCE ==================== */
+
+@media (max-width: 480px) {
+    .context-menu {
+        min-width: 180px;
+        font-size: 0.8rem;
+    }
+    
+    .context-menu-item {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .notification {
+        right: 10px !important;
+        left: 10px !important;
+        top: 10px !important;
+        width: auto !important;
+    }
+    
+    .chart-controls-overlay {
+    flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+    }
+    
+    .chart-controls-left,
+    .chart-controls-right {
+        background: rgba(18, 18, 18, 0.9);
+        padding: 0.3rem;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 247, 255, 0.2);
+    }
+}
+
+/* ==================== PERFORMANCE INDICATORS ==================== */
+
+.performance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--success-color);
+    border-radius: 12px;
+    font-size: 0.7rem;
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.performance-badge.warning {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.performance-badge.error {
+    background: rgba(255, 0, 85, 0.1);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+/* ==================== ENHANCED ACCESSIBILITY ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .chart-section,
+    .status-indicator.online {
+        animation: none !important;
+    }
+}
+
+/* High contrast mode improvements */
+@media (prefers-contrast: high) {
+    .chart-section,
+    .chat-container {
+        border-width: 2px;
+    }
+    
+    .symbol-dropdown,
+    .section-content,
+    .context-menu {
+        border-width: 2px;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+    .trading-toolbar,
+    .chart-controls-overlay,
+    .chat-container,
+    .navbar {
+        display: none !important;
+    }
+    
+    .main-container {
+        flex-direction: row !important;
+        height: auto !important;
+    }
+    
+    .chart-section {
+        flex: 1 !important;
+        box-shadow: none !important;
+        border: 1px solid #333 !important;
+    }
+    
+    .trading-panel {
+        padding: 0 !important;
+    }
+} 
+
+/* ==================== IMPROVED CONTRAST & READABILITY ==================== */
+
+/* Enhanced Chat Title Readability */
+.chat-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    text-shadow: none; /* Remove glow for better readability */
+    letter-spacing: -0.02em;
+}
+
+.chat-subtitle {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+/* Improved Placeholder Contrast */
+.chat-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.symbol-search-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+/* Prominent Send Button */
+.chat-submit {
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #00f7ff 0%, #0066ff 100%);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 120px;
+    box-shadow: 
+        0 4px 20px rgba(0, 247, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+}
+
+.chat-submit:hover::before {
+    left: 100%;
+}
+
+.chat-submit:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 25px rgba(0, 247, 255, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.chat-submit:active {
+    transform: translateY(-1px);
+}
+
+/* Unified button styling */
+.timeframe-btn, .chart-type-btn, .drawing-tool-btn {
+    padding: 0.6rem 1rem;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeframe-btn:hover, .chart-type-btn:hover, .drawing-tool-btn:hover {
+    border-color: var(--border-emphasis);
+    background: var(--surface-secondary);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 247, 255, 0.15);
+}
+
+.timeframe-btn.active, .chart-type-btn.active, .drawing-tool-btn.active {
+    background: linear-gradient(135deg, var(--primary-color), #0099cc);
+    color: var(--background-dark);
+    border-color: var(--primary-color);
+    box-shadow: 
+        0 4px 15px rgba(0, 247, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    font-weight: 600;
+}
+
+
+
+/* ==================== ENHANCED MESSAGES STYLING ==================== */
+
+.message.user {
+    background: linear-gradient(135deg, #00f7ff 0%, #0066ff 100%);
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 8px;
+    box-shadow: 
+        0 4px 20px rgba(0, 247, 255, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    font-weight: 500;
+}
+
+.message.ai {
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-bottom-left-radius: 8px;
+    color: var(--text-light);
+    margin-right: auto;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+/* ==================== TOOLBAR CONSISTENCY ==================== */
+
+.trading-toolbar {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.toolbar-main {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    font-weight: 500;
+}
+
+.section-header:hover {
+    background: var(--card-dark);
+    border-color: var(--border-emphasis);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 247, 255, 0.15);
+}
+
+/* ==================== STATUS INDICATORS IMPROVEMENT ==================== */
+
+.status-indicator.online {
+    background: var(--success-color);
+    box-shadow: 
+        0 0 8px rgba(0, 255, 136, 0.6),
+        0 0 0 2px rgba(0, 255, 136, 0.2);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1; 
+    }
+    50% { 
+        transform: scale(1.1);
+        opacity: 0.8; 
+    }
+} 
+
+/* ==================== FINISHING TOUCHES & UTILITIES ==================== */
+
+/* Smooth transitions for layout changes */
+* {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Remove conflicting margin/padding from old layout */
+.trading-panel {
+        margin: 0;
+    padding: 0;
+}
+
+#chatContainer {
+    margin: 0;
+    padding: 0;
+}
+
+/* Enhanced focus states */
+.symbol-search-input:focus,
+.chat-input:focus {
+    transform: translateY(-2px);
+}
+
+/* Improved button press feedback */
+.chat-submit:active,
+.timeframe-btn:active,
+.chart-type-btn:active,
+.control-btn:active {
+    transform: translateY(0) !important;
+    transition: transform 0.1s ease;
+}
+
+/* ==================== VISUAL ENHANCEMENTS ==================== */
+
+/* Subtle grid background for better depth */
+    .main-container {
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(160, 169, 192, 0.05) 1px, transparent 0);
+    background-size: 20px 20px;
+    background-position: 0 0;
+}
+
+/* Enhanced depth for containers */
+.chart-section,
+.chat-container,
+.trading-toolbar {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Improved scrollbar for better UX */
+.messages::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: var(--surface-secondary);
+    border-radius: 4px;
+    margin: 8px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        to bottom,
+        var(--primary-color),
+        var(--secondary-color)
+    );
+    border-radius: 4px;
+    border: 1px solid var(--surface-primary);
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    box-shadow: 0 0 8px rgba(0, 247, 255, 0.4);
+}
+
+/* ==================== MICRO-INTERACTIONS ==================== */
+
+/* Hover states for interactive elements */
+.symbol-item:hover {
+    transform: translateX(4px);
+    background: rgba(0, 247, 255, 0.08);
+    border-left-color: var(--primary-color);
+    border-left-width: 4px;
+}
+
+.message:hover {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+/* Loading state improvements */
+.chart-loading {
+    background: var(--surface-secondary);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* ==================== ACCESSIBILITY IMPROVEMENTS ==================== */
+
+/* Better focus indicators */
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Keyboard navigation improvements */
+.symbol-item:focus,
+.dropdown-tab:focus,
+.context-menu-item:focus {
+    background: rgba(0, 247, 255, 0.15);
+    outline: none;
+}
+
+/* ==================== RESPONSIVE ENHANCEMENTS ==================== */
+
+/* Better mobile experience */
+@media (max-width: 480px) {
+    .main-container {
+        background-image: none; /* Remove grid on mobile for performance */
+        grid-template-rows: auto 250px 1fr;
+        padding: 0.5rem;
+        gap: 0.8rem;
+    }
+    
+    .chart-context-header {
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    .trading-toolbar {
+        padding: 0.8rem;
+        border-radius: 12px;
+    }
+    
+    .chat-container,
+    .chart-section {
+        border-radius: 12px;
+        padding: 1.2rem;
+    }
+    
+    /* Stack toolbar items vertically on very small screens */
+    .toolbar-main {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .chart-types .section-content,
+    .timeframes .section-content {
+        justify-content: center;
+    }
+}
+
+/* Tablet optimizations */
+@media (max-width: 1024px) and (min-width: 481px) {
+    .main-container {
+        padding: 1rem;
+        gap: 1.2rem;
+    }
+    
+    .toolbar-main {
+        gap: 1.5rem;
+    }
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+/* Hardware acceleration for smooth animations */
+.main-container,
+.chart-section,
+.chat-container,
+.trading-toolbar,
+.symbol-dropdown {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Optimize heavy animations for better performance */
+@media (prefers-reduced-motion: reduce) {
+    .main-container::before,
+    .status-indicator.online,
+    .chart-section {
+        animation: none !important;
+    }
+    
+    * {
+        transition-duration: 0.1s !important;
+    }
+}
+
+/* ==================== DARK MODE ENHANCEMENTS ==================== */
+
+/* Better contrast in dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-gray: #b3bcc8;
+        --text-muted: #7a8394;
+        --border-subtle: rgba(179, 188, 200, 0.12);
+    }
+}
+
+/* ==================== PRINT OPTIMIZATIONS ==================== */
+
+@media print {
+    .main-container {
+        background-image: none !important;
+        grid-template-areas: "chart" !important;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 1fr !important;
+        padding: 0 !important;
+        gap: 0 !important;
+    }
+    
+    .trading-toolbar,
+    #chatContainer,
+    .chart-controls-overlay {
+        display: none !important;
+    }
+    
+    .chart-section {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: 2px solid #333 !important;
+    }
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.surface-primary {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+}
+
+.surface-secondary {
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+}
+
+.glow-primary {
+    box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+}
+
+.glow-secondary {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+/* ==================== FINAL POLISH ==================== */
+
+/* Ensure consistent spacing */
+.chart-context-header > * + * {
+    margin-left: 1rem;
+}
+
+.price-info > * + * {
+    margin-left: 2rem;
+}
+
+/* Better visual hierarchy */
+.chart-context-header {
+    position: relative;
+    z-index: 2;
+}
+
+.trading-toolbar {
+    position: relative;
+    z-index: 3;
+}
+
+/* Smooth page load animation */
+@keyframes pageLoad {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+    opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main-container {
+    animation: pageLoad 0.6s ease-out;
+}
+
+.chart-section {
+    animation: pageLoad 0.8s ease-out;
+}
+
+.chat-container {
+    animation: pageLoad 1s ease-out;
+} 
+
+/* ==================== OPTIMIZED LAYOUT SYSTEM ==================== */
+
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 420px; /* Reduced chat width for better balance */
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "toolbar toolbar"
+        "chart chat";
+    gap: 1rem; /* Reduced gap */
+    padding: 1rem; /* Reduced padding */
+    height: calc(100vh - 80px); /* Adjusted for navbar */
+    max-width: 100vw;
+    margin: 0;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+/* Remove unnecessary grid background */
+.main-container {
+    background-image: none;
+}
+
+/* ==================== OPTIMIZED TOOLBAR ==================== */
+
+#tradingToolbar {
+    grid-area: toolbar;
+    margin-bottom: 0; /* Remove extra margin */
+}
+
+.trading-toolbar {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px; /* Reduced radius */
+    padding: 0.8rem 1.2rem; /* Reduced padding */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+}
+
+.toolbar-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Reduced gap */
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+/* ==================== OPTIMIZED CHART SECTION ==================== */
+
+.trading-panel {
+    grid-area: chart;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.chart-section {
+    background: var(--surface-primary);
+    border-radius: 12px; /* Consistent radius */
+    padding: 1rem; /* Reduced padding */
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Optimized chart header */
+.chart-context-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem; /* Reduced padding */
+    background: var(--surface-secondary);
+    border-radius: 8px; /* Smaller radius */
+    margin-bottom: 1rem; /* Reduced margin */
+    border: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+    gap: 0.8rem; /* Added gap for better spacing */
+}
+
+/* ==================== OPTIMIZED CHAT SECTION ==================== */
+
+#chatContainer {
+    grid-area: chat;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.chat-container {
+    background: var(--surface-primary);
+    border-radius: 12px; /* Consistent radius */
+    padding: 1.5rem; /* Reduced padding */
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1); /* Lighter shadow */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Optimized chat header */
+.chat-header {
+    margin-bottom: 1rem; /* Reduced margin */
+    text-align: center;
+    padding-bottom: 0.8rem; /* Reduced padding */
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Toned down chat title */
+.chat-title {
+    font-size: 1.4rem; /* Reduced size */
+    font-weight: 600;
+    color: var(--text-light); /* Simple white instead of gradient */
+    margin-bottom: 0.3rem; /* Reduced margin */
+    text-shadow: none;
+    letter-spacing: -0.01em;
+}
+
+.chat-subtitle {
+    color: var(--text-gray);
+    font-size: 0.9rem; /* Reduced size */
+    line-height: 1.4;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* ==================== OPTIMIZED SPACING SYSTEM ==================== */
+
+/* Remove connector line for cleaner look */
+.main-container::before {
+    display: none;
+}
+
+/* Optimized price info */
+.price-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Reduced gap */
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Optimized symbol search */
+.symbol-search-container {
+    position: relative;
+    max-width: 320px; /* Reduced width */
+    min-width: 260px; /* Reduced min-width */
+    margin: 0;
+}
+
+.symbol-search-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem 0.7rem 2.5rem; /* Reduced padding */
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px; /* Smaller radius */
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    margin: 0;
+}
+
+/* ==================== OPTIMIZED MESSAGES ==================== */
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem; /* Reduced margin */
+    padding: 0.5rem 0; /* Reduced padding */
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Reduced gap */
+}
+
+.message {
+    padding: 1.2rem; /* Reduced padding */
+    border-radius: 12px; /* Smaller radius */
+    max-width: 90%;
+    word-wrap: break-word;
+    line-height: 1.5;
+    font-size: 0.9rem; /* Slightly smaller */
+    animation: messageSlide 0.3s ease-out;
+    position: relative;
+    margin: 0;
+}
+
+/* ==================== OPTIMIZED FORM SECTION ==================== */
+
+.chat-form {
+    display: flex;
+    gap: 0.6rem; /* Reduced gap */
+    margin-top: 0; /* Remove auto margin */
+    padding-top: 0.8rem; /* Reduced padding */
+    border-top: 1px solid var(--border-subtle);
+}
+
+.chat-input {
+    flex: 1;
+    padding: 0.8rem 1rem; /* Reduced padding */
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px; /* Smaller radius */
+    color: var(--text-light);
+    outline: none;
+    font-size: 0.9rem; /* Increased font size */
+    transition: all 0.3s ease;
+    font-family: inherit;
+    margin: 0;
+    height: 40px !important; /* Increased height */
+}
+
+.chat-submit {
+    padding: 0.8rem 1.5rem; /* Increased padding */
+    background: linear-gradient(135deg, #00f7ff 0%, #0066ff 100%);
+    border: none;
+    border-radius: 20px; /* Larger radius */
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem; /* Increased font size */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 90px;
+    box-shadow: 0 2px 8px rgba(0, 247, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    height: 40px !important; /* Increased height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================== OPTIMIZED CHART CONTAINER ==================== */
+
+#chartContainer {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    background: transparent;
+    position: relative;
+    border-radius: 6px; /* Smaller radius */
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== OPTIMIZED CONTROLS ==================== */
+
+.chart-controls-overlay {
+    position: absolute;
+    top: 0.5rem; /* Reduced spacing */
+    left: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Reduced size */
+    height: 32px; /* Reduced size */
+    background: rgba(18, 18, 18, 0.9);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    margin: 0;
+    pointer-events: auto;
+}
+
+/* ==================== RESPONSIVE OPTIMIZATIONS ==================== */
+
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: 1fr 380px; /* Further reduced chat width */
+        gap: 0.8rem;
+        padding: 0.8rem;
+    }
+    
+    .chat-container {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "toolbar"
+            "chart"
+            "chat";
+        grid-template-rows: auto 1fr 350px; /* Fixed chat height */
+        gap: 0.8rem;
+        padding: 0.8rem;
+        height: calc(100vh - 70px);
+    }
+    
+    .chat-container {
+        min-height: 300px;
+        max-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0.5rem;
+        gap: 0.5rem;
+        grid-template-rows: auto 280px 1fr;
+    }
+    
+    .chart-context-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+        padding: 0.6rem;
+    }
+    
+    .price-info {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .symbol-search-container {
+        max-width: 100%;
+        min-width: 100%;
+    }
+    
+    .trading-toolbar {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .toolbar-main {
+        gap: 1rem;
+        justify-content: center;
+    }
+    
+    .chat-container,
+    .chart-section {
+        border-radius: 8px;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0.3rem;
+        gap: 0.3rem;
+        grid-template-rows: auto 220px 1fr;
+    }
+    
+    .chart-controls-overlay {
+        top: 0.3rem;
+        left: 0.3rem;
+        right: 0.3rem;
+    }
+    
+    .control-btn {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .trading-toolbar {
+        padding: 0.4rem 0.6rem;
+        border-radius: 6px;
+    }
+    
+    .toolbar-main {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: stretch;
+    }
+    
+    .chart-types .section-content,
+    .timeframes .section-content {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    
+    .timeframe-btn, .chart-type-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+        height: 28px;
+    }
+    
+    .control-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+    
+    .chart-controls-overlay {
+        top: 0.2rem;
+        left: 0.2rem;
+        right: 0.2rem;
+    }
+}
+
+/* ==================== REMOVE UNNECESSARY ANIMATIONS ==================== */
+
+/* Disable heavy animations for better performance */
+.chart-section {
+    animation: none;
+}
+
+.main-container {
+    animation: none;
+}
+
+.chat-container {
+    animation: none;
+}
+
+/* ==================== UTILITY OVERRIDES ==================== */
+
+/* Remove conflicting margins and paddings */
+.chart-context-header > * {
+    margin: 0;
+}
+
+.price-info > * {
+    margin: 0;
+}
+
+/* Ensure no element has unnecessary spacing */
+* {
+    box-sizing: border-box;
+}
+
+/* Override any inherited margins/paddings */
+.trading-panel,
+#chatContainer,
+.chart-section,
+.chat-container {
+    margin: 0 !important;
+}
+
+/* ==================== CLEAN SCROLLBARS ==================== */
+
+.messages::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: var(--surface-secondary);
+    border-radius: 3px;
+    margin: 4px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+    opacity: 0.7;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    opacity: 1;
+}
+
+/* ==================== FINAL LAYOUT UTILITIES ==================== */
+
+/* Ensure timeframe and last-price styling consistency */
+.timeframe {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.last-price {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure all containers have no unexpected margins */
+.navbar,
+.main-container,
+.trading-toolbar,
+.chart-section,
+.chat-container,
+.chart-context-header,
+.messages,
+.chat-form {
+    box-sizing: border-box;
+}
+
+/* Remove any default browser spacing */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Ensure full height usage */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fix any potential layout shifts */
+.chart-context-header,
+.price-info,
+.symbol-search-container {
+    flex-shrink: 0;
+}
+
+/* Ensure proper flex behavior */
+.messages {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+}
+
+#chartContainer {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+}
+
+/* Clean button spacing */
+.chart-type-btn, .timeframe-btn, .drawing-tool-btn {
+    margin: 0;
+    padding: 0.5rem 0.8rem;
+    line-height: 1.2;
+}
+
+/* Ensure search icon positioning */
+.search-icon {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== LAYOUT CONSISTENCY FIXES ==================== */
+
+/* Ensure consistent spacing in price info */
+.price-info > * {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure chart controls don't interfere with layout */
+.chart-controls-left,
+.chart-controls-right {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure status indicator alignment */
+.status-indicator {
+    flex-shrink: 0;
+    margin-right: 0.4rem;
+}
+
+/* Prevent text overflow in constrained spaces */
+.symbol-search-input,
+.chat-input {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ensure consistent button heights across toolbar */
+.section-header,
+.chart-type-btn,
+.timeframe-btn {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Mobile layout optimizations */
+@media (max-width: 640px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .logo {
+        font-size: 1.3rem;
+    }
+}
+
+/* Very small screen optimizations */
+@media (max-width: 320px) {
+    .main-container {
+        padding: 0.2rem;
+        gap: 0.2rem;
+    }
+    
+    .trading-toolbar,
+    .chart-section,
+    .chat-container {
+        border-radius: 6px;
+        padding: 0.8rem;
+    }
+    
+    .chart-context-header {
+        padding: 0.5rem;
+    }
+}
+
+/* ==================== COMPACT LAYOUT FIXES ==================== */
+
+/* More compact main container */
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 400px; /* Further reduced chat width */
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "toolbar toolbar"
+        "chart chat";
+    gap: 0.8rem; /* Even smaller gap */
+    padding: 0.8rem; /* Reduced padding */
+    height: calc(100vh - 70px); /* More precise height */
+    max-width: 100vw;
+    margin: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    background-image: none;
+}
+
+/* Ultra-compact toolbar */
+.trading-toolbar {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px; /* Smaller radius */
+    padding: 0.6rem 1rem; /* Much smaller padding */
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+}
+
+.toolbar-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Smaller gap */
+    flex-wrap: wrap;
+    margin: 0;
+    min-height: 40px; /* Fixed height for consistency */
+}
+
+/* Compact chart section */
+.chart-section {
+    background: var(--surface-primary);
+    border-radius: 10px; /* Consistent radius */
+    padding: 0.8rem; /* Much smaller padding */
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Compact chart header */
+.chart-context-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.8rem; /* Much smaller padding */
+    background: var(--surface-secondary);
+    border-radius: 6px; /* Smaller radius */
+    margin-bottom: 0.8rem; /* Smaller margin */
+    border: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+    gap: 0.6rem; /* Smaller gap */
+    min-height: 44px; /* Fixed height */
+}
+
+/* Compact symbol search */
+.symbol-search-container {
+    position: relative;
+    max-width: 280px; /* Further reduced */
+    min-width: 220px; /* Smaller min-width */
+    margin: 0;
+}
+
+.symbol-search-input {
+    width: 100%;
+    padding: 0.5rem 0.7rem 0.5rem 2.2rem; /* Much smaller padding */
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; /* Smaller radius */
+    color: var(--text-light);
+    font-size: 0.85rem; /* Smaller font */
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    margin: 0;
+    height: 32px; /* Fixed height */
+}
+
+/* Compact price info */
+.price-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Smaller gap */
+    font-weight: 500;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.timeframe {
+    color: var(--text-gray);
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.last-price {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem; /* Smaller gap */
+    font-weight: 600;
+    font-size: 0.85rem; /* Smaller font */
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+/* Compact buttons across toolbar */
+.timeframe-btn, .chart-type-btn, .drawing-tool-btn {
+    padding: 0.4rem 0.7rem; /* Much smaller padding */
+    background: var(--surface-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; /* Smaller radius */
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    height: 32px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: auto;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem; /* Smaller gap */
+    cursor: pointer;
+    padding: 0.4rem 0.7rem; /* Smaller padding */
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    font-weight: 500;
+    font-size: 0.8rem; /* Smaller font */
+    height: 32px; /* Fixed height */
+    margin: 0;
+}
+
+/* Compact chart controls */
+.chart-controls-overlay {
+    position: absolute;
+    top: 0.4rem; /* Smaller spacing */
+    left: 0.4rem;
+    right: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; /* Smaller size */
+    height: 28px;
+    background: rgba(18, 18, 18, 0.92);
+    border: 1px solid var(--border-subtle);
+    border-radius: 5px; /* Smaller radius */
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    margin: 0;
+    pointer-events: auto;
+    font-size: 0.75rem; /* Smaller icon */
+}
+
+.chart-controls-left,
+.chart-controls-right {
+    display: flex;
+    gap: 0.3rem; /* Smaller gap */
+    align-items: center;
+        margin: 0;
+    padding: 0;
+}
+
+/* Compact chat container */
+.chat-container {
+    background: var(--surface-primary);
+    border-radius: 10px; /* Consistent radius */
+    padding: 1.2rem; /* Smaller padding */
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08); /* Lighter shadow */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Compact chat header */
+.chat-header {
+    margin-bottom: 0.8rem; /* Smaller margin */
+    text-align: center;
+    padding-bottom: 0.6rem; /* Smaller padding */
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.chat-title {
+    font-size: 1.2rem; /* Even smaller */
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.2rem; /* Smaller margin */
+    text-shadow: none;
+    letter-spacing: -0.01em;
+}
+
+.chat-subtitle {
+    color: var(--text-gray);
+    font-size: 0.8rem; /* Smaller font */
+    line-height: 1.3;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Compact messages */
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 0.8rem; /* Smaller margin */
+    padding: 0.3rem 0; /* Smaller padding */
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem; /* Smaller gap */
+}
+
+.message {
+    padding: 1rem; /* Smaller padding */
+    border-radius: 10px; /* Smaller radius */
+    max-width: 90%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    font-size: 0.85rem; /* Smaller font */
+    animation: messageSlide 0.3s ease-out;
+    position: relative;
+    margin: 0;
+}
+
+/* Compact form */
+.chat-form {
+    display: flex;
+    gap: 0.5rem; /* Smaller gap */
+    margin-top: 0;
+    padding-top: 0.6rem; /* Smaller padding */
+    border-top: 1px solid var(--border-subtle);
+}
+
+.chat-input {
+    flex: 1;
+    padding: 0.6rem 0.8rem; /* Smaller padding */
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px; /* Smaller radius */
+    color: var(--text-light);
+    outline: none;
+    font-size: 0.85rem; /* Smaller font */
+    transition: all 0.3s ease;
+    font-family: inherit;
+    margin: 0;
+    height: 36px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Search icon positioning */
+.search-icon {
+    position: absolute;
+    left: 0.6rem; /* Adjusted for smaller input */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-gray);
+    font-size: 0.8rem; /* Smaller icon */
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== RESPONSIVE COMPACT LAYOUT ==================== */
+
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: 1fr 360px; /* Even smaller chat */
+        gap: 0.6rem;
+        padding: 0.6rem;
+    }
+    
+    .chat-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "toolbar"
+            "chart"
+            "chat";
+        grid-template-rows: auto 1fr 320px; /* Smaller chat height */
+        gap: 0.6rem;
+        padding: 0.6rem;
+    }
+    
+    .chat-container {
+        min-height: 280px;
+        max-height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0.4rem;
+        gap: 0.4rem;
+        grid-template-rows: auto 260px 1fr;
+    }
+    
+    .chart-context-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+        padding: 0.5rem;
+        min-height: auto;
+    }
+    
+    .price-info {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.8rem;
+        width: 100%;
+    }
+    
+    .symbol-search-container {
+        max-width: 100%;
+        min-width: 100%;
+    }
+    
+    .trading-toolbar {
+        padding: 0.5rem 0.7rem;
+    }
+    
+    .toolbar-main {
+        gap: 0.8rem;
+        justify-content: center;
+        min-height: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0.3rem;
+        gap: 0.3rem;
+        grid-template-rows: auto 200px 1fr;
+    }
+    
+    .toolbar-main {
+        flex-direction: column;
+        gap: 0.6rem;
+        align-items: stretch;
+        min-height: auto;
+    }
+    
+    .chart-types .section-content,
+    .timeframes .section-content {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+    }
+    
+    .timeframe-btn, .chart-type-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.7rem;
+        height: 28px;
+    }
+    
+    .control-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+    
+    .chart-controls-overlay {
+        top: 0.2rem;
+        left: 0.2rem;
+        right: 0.2rem;
+    }
+}
+
+/* ==================== MICRO-SPACING FIXES ==================== */
+
+/* Remove any remaining excess spacing */
+.trading-panel,
+#chatContainer,
+#tradingToolbar {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Ensure consistent heights */
+.symbol-search-input,
+.timeframe-btn,
+.chart-type-btn,
+.section-header {
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+/* Status indicator adjustments */
+.status-indicator {
+    width: 6px;
+    height: 6px;
+    margin-right: 0.3rem;
+    flex-shrink: 0;
+}
+
+/* Compact navbar */
+.navbar {
+    padding: 0.8rem 1.5rem;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+
+/* Ensure no element overflow */
+* {
+    box-sizing: border-box;
+}
+
+/* ==================== FINAL CLEANUP & OVERRIDES ==================== */
+
+/* Force remove any remaining conflicting styles */
+.main-container,
+.trading-toolbar,
+.chart-section,
+.chat-container,
+.chart-context-header,
+.price-info,
+.symbol-search-container,
+.messages,
+.chat-form,
+.chat-input,
+.chat-submit {
+    box-sizing: border-box !important;
+}
+
+/* Ensure no element has unexpected margins */
+.trading-panel,
+#chatContainer,
+#tradingToolbar {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Override any conflicting heights */
+.symbol-search-input,
+.timeframe-btn,
+.chart-type-btn,
+.section-header,
+.chat-input {
+    height: 32px !important;
+    line-height: 1.2 !important;
+}
+
+.chat-submit {
+    height: 36px !important;
+}
+
+.control-btn {
+    width: 28px !important;
+    height: 28px !important;
+}
+
+/* Ensure consistent border radius */
+.trading-toolbar,
+.chart-section,
+.chat-container {
+    border-radius: 10px !important;
+}
+
+.chart-context-header,
+.symbol-search-input,
+.timeframe-btn,
+.chart-type-btn,
+.section-header {
+    border-radius: 6px !important;
+}
+
+/* Force compact spacing */
+.main-container {
+    gap: 0.8rem !important;
+    padding: 0.8rem !important;
+}
+
+.toolbar-main {
+    gap: 1rem !important;
+    min-height: 40px !important;
+}
+
+.chart-context-header {
+    padding: 0.6rem 0.8rem !important;
+    margin-bottom: 0.8rem !important;
+    gap: 0.6rem !important;
+    min-height: 44px !important;
+}
+
+.price-info {
+    gap: 1rem !important;
+}
+
+.chat-header {
+    margin-bottom: 0.8rem !important;
+    padding-bottom: 0.6rem !important;
+}
+
+.messages {
+    margin-bottom: 0.8rem !important;
+    padding: 0.3rem 0 !important;
+    gap: 0.8rem !important;
+}
+
+.chat-form {
+    gap: 0.5rem !important;
+    padding-top: 0.6rem !important;
+}
+
+/* Ensure proper text sizes */
+.chat-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.2rem !important;
+}
+
+.chat-subtitle {
+    font-size: 0.8rem !important;
+}
+
+.timeframe {
+    font-size: 0.8rem !important;
+}
+
+.last-price {
+    font-size: 0.85rem !important;
+    gap: 0.4rem !important;
+}
+
+.message {
+    font-size: 0.85rem !important;
+    padding: 1rem !important;
+    border-radius: 10px !important;
+}
+
+/* Remove any remaining animations that might cause layout shifts */
+.chart-section,
+.main-container,
+.chat-container {
+    animation: none !important;
+}
+
+/* Ensure scrollbars are minimal */
+.messages::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+/* Force flex behaviors */
+.messages {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+}
+
+#chartContainer {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+}
+
+.symbol-search-container {
+    flex-shrink: 0 !important;
+    max-width: 280px !important;
+    min-width: 220px !important;
+}
+
+.price-info {
+    flex-shrink: 0 !important;
+}
+
+/* Mobile overrides */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0.4rem !important;
+        gap: 0.4rem !important;
+    }
+    
+    .chart-context-header {
+        padding: 0.5rem !important;
+    }
+    
+    .trading-toolbar {
+        padding: 0.5rem 0.7rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 0.3rem !important;
+        gap: 0.3rem !important;
+    }
+    
+    .control-btn {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    .timeframe-btn,
+    .chart-type-btn {
+        height: 28px !important;
+        padding: 0.3rem 0.5rem !important;
+    }
+}
+
+/* ==================== IMPROVED LAYOUT WITH LARGER CHAT ==================== */
+
+/* Main container with better proportions */
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 480px; /* Increased chat width significantly */
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "toolbar toolbar"
+        "chart chat";
+    gap: 0.8rem;
+    padding: 0.8rem;
+    height: calc(100vh - 70px);
+    max-width: 100vw;
+    margin: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    background-image: none;
+}
+
+/* ==================== HIDE ANNOYING DROPDOWNS & OVERLAYS ==================== */
+
+/* Hide all dropdown content by default */
+.section-content {
+    display: none !important;
+}
+
+/* Only show section headers, not dropdown content */
+.toolbar-section {
+    position: relative;
+}
+
+.toolbar-section:hover .section-content {
+    display: none !important; /* Force hide annoying dropdowns */
+}
+
+/* Hide draw dropdown overlay that's interfering */
+.drawing-tools .section-content,
+.indicators .section-content,
+.settings .section-content,
+.alerts .section-content {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Clean toolbar without interfering dropdowns */
+.toolbar-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap; /* Prevent wrapping that causes issues */
+    margin: 0;
+    min-height: 40px;
+    overflow: hidden; /* Hide overflow content */
+}
+
+/* ==================== HIDE ALERT DESIGN THAT'S INTERFERING ==================== */
+
+/* Hide the Add Alert button that's causing issues */
+.add-alert,
+.alert-item,
+.alerts-group {
+    display: none !important;
+}
+
+/* Hide templates dropdown if it's interfering */
+.templates .section-content {
+    display: none !important;
+}
+
+/* ==================== LARGER, BETTER CHATBOT ==================== */
+
+/* Enlarged chat container */
+.chat-container {
+    background: var(--surface-primary);
+    border-radius: 10px;
+    padding: 1.5rem; /* Increased padding */
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Bigger chat title */
+.chat-title {
+    font-size: 1.4rem !important; /* Increased from 1.2rem */
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+    text-shadow: none;
+    letter-spacing: -0.01em;
+}
+
+.chat-subtitle {
+    font-size: 0.9rem !important; /* Increased from 0.8rem */
+    color: var(--text-gray);
+    line-height: 1.4;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Bigger message area */
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem; /* Increased margin */
+    padding: 0.5rem 0; /* Increased padding */
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Increased gap between messages */
+}
+
+/* Bigger individual messages */
+.message {
+    padding: 1.2rem; /* Increased padding */
+    border-radius: 12px; /* Larger border radius */
+    max-width: 90%;
+    word-wrap: break-word;
+    line-height: 1.5; /* Better line height */
+    font-size: 0.9rem !important; /* Increased font size */
+    animation: messageSlide 0.3s ease-out;
+    position: relative;
+    margin: 0;
+}
+
+/* Bigger input and button */
+.chat-input {
+    flex: 1;
+    padding: 0.8rem 1rem; /* Increased padding */
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px; /* Larger radius */
+    color: var(--text-light);
+    outline: none;
+    font-size: 0.9rem; /* Increased font size */
+    transition: all 0.3s ease;
+    font-family: inherit;
+    margin: 0;
+    height: 40px !important; /* Increased height */
+}
+
+.chat-submit {
+    padding: 0.8rem 1.5rem; /* Increased padding */
+    background: linear-gradient(135deg, #00f7ff 0%, #0066ff 100%);
+    border: none;
+    border-radius: 20px; /* Larger radius */
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem; /* Increased font size */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 90px;
+    box-shadow: 0 2px 8px rgba(0, 247, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    height: 40px !important; /* Increased height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================== PRECISION IMPROVEMENTS ==================== */
+
+/* More precise chart section */
+.chart-section {
+    background: var(--surface-primary);
+    border-radius: 10px;
+    padding: 0.8rem;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    margin: 0;
+}
+
+/* Cleaner chart header */
+.chart-context-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface-secondary);
+    border-radius: 6px;
+    margin-bottom: 0.8rem;
+    border: 1px solid var(--border-subtle);
+    flex-wrap: nowrap; /* Prevent wrapping */
+    gap: 0.6rem;
+    min-height: 44px;
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Clean symbol search */
+.symbol-search-container {
+    position: relative;
+    max-width: 300px; /* Slightly larger */
+    min-width: 240px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.symbol-search-input {
+    width: 100%;
+    padding: 0.5rem 0.7rem 0.5rem 2.2rem;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    height: 32px;
+}
+
+/* Hide symbol dropdown when not needed */
+.symbol-dropdown {
+    display: none !important; /* Hide by default */
+}
+
+.symbol-search-input:focus + .symbol-dropdown {
+    display: block !important; /* Only show when focused */
+}
+
+/* ==================== RESPONSIVE WITH LARGER CHAT ==================== */
+
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: 1fr 450px; /* Still larger chat */
+        gap: 0.6rem;
+        padding: 0.6rem;
+    }
+    
+    .chat-container {
+        padding: 1.3rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "toolbar"
+            "chart"
+            "chat";
+        grid-template-rows: auto 1fr 400px; /* Larger chat height */
+        gap: 0.6rem;
+        padding: 0.6rem;
+    }
+    
+    .chat-container {
+        min-height: 350px;
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 0.4rem;
+        gap: 0.4rem;
+        grid-template-rows: auto 280px 1fr; /* Prioritize chat on mobile */
+    }
+    
+    .toolbar-main {
+        flex-wrap: wrap; /* Allow wrapping on mobile */
+        gap: 0.5rem;
+    }
+}
+
+/* ==================== FORCE HIDE INTERFERING ELEMENTS ==================== */
+
+/* Force hide all potentially interfering dropdowns and overlays */
+.dropdown-content,
+.section-content,
+.symbol-suggestions,
+.user-dropdown,
+.context-menu {
+    z-index: 9999 !important;
+}
+
+/* Ensure toolbars don't overflow */
+.trading-toolbar {
+    overflow: hidden !important;
+}
+
+.toolbar-main > * {
+    flex-shrink: 0;
+}
+
+/* Clean up any remaining overlapping elements */
+.chart-controls-overlay {
+    pointer-events: none !important;
+}
+
+.chart-controls-overlay > * {
+    pointer-events: auto !important;
+}
+
+/* ==================== ULTIMATE CLEANUP & PRECISION ==================== */
+
+/* Force override all conflicting styles */
+.main-container {
+    display: grid !important;
+    grid-template-columns: 1fr 480px !important; /* Larger chat */
+    grid-template-rows: auto 1fr !important;
+    grid-template-areas: 
+        "toolbar toolbar"
+        "chart chat" !important;
+    gap: 0.8rem !important;
+    padding: 0.8rem !important;
+    height: calc(100vh - 70px) !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+    background: var(--background-dark) !important;
+    background-image: none !important;
+}
+
+/* Completely hide all interfering dropdowns */
+.section-content,
+.dropdown-content,
+.drawing-tools .section-content,
+.indicators .section-content,
+.settings .section-content,
+.alerts .section-content,
+.templates .section-content {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
+/* Remove all hover effects on toolbar sections */
+.toolbar-section:hover .section-content,
+.section-header:hover .section-content {
+    display: none !important;
+}
+
+/* Clean toolbar without dropdowns */
+.toolbar-main {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    min-height: 40px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Chart types inline (no dropdown) */
+.chart-types .section-content {
+    position: static !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: auto !important;
+}
+
+/* Timeframes inline (no dropdown) */
+.timeframes .section-content {
+    position: static !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    gap: 0.3rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: auto !important;
+}
+
+/* Alerts completely hidden */
+.alerts,
+.add-alert,
+.alert-item,
+.alerts-group,
+.alert-list {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Section headers without expand icons */
+.section-header .expand-icon {
+    display: none !important;
+}
+
+/* Prevent any overlay issues */
+.trading-toolbar {
+    position: relative !important;
+    z-index: 10 !important;
+    overflow: hidden !important;
+    background: var(--surface-primary) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 10px !important;
+    padding: 0.6rem 1rem !important;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Clean chart section */
+.chart-section {
+    position: relative !important;
+    z-index: 1 !important;
+    background: var(--surface-primary) !important;
+    border-radius: 10px !important;
+    padding: 0.8rem !important;
+    border: 1px solid var(--border-subtle) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Enhanced chat section */
+.chat-container {
+    position: relative !important;
+    z-index: 1 !important;
+    background: var(--surface-primary) !important;
+    border-radius: 10px !important;
+    padding: 1.5rem !important;
+    border: 1px solid var(--border-subtle) !important;
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08) !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+}
+
+/* Symbol dropdown behavior fix */
+.symbol-dropdown {
+    display: none !important;
+}
+
+.symbol-search-input:focus ~ .symbol-dropdown,
+.symbol-search-input:active ~ .symbol-dropdown {
+    display: block !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: var(--surface-primary) !important;
+    border: 1px solid var(--border-emphasis) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+}
+
+/* Clean price info layout */
+.price-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Chart container precision */
+#chartContainer {
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    background: transparent !important;
+    position: relative !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Messages area precision */
+.messages {
+    flex: 1 1 0 !important;
+    overflow-y: auto !important;
+    margin-bottom: 1rem !important;
+    padding: 0.5rem 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+}
+
+/* Clean input styling */
+.symbol-search-input,
+.chat-input {
+    background: var(--surface-secondary) !important;
+    border: 1px solid var(--border-subtle) !important;
+    color: var(--text-light) !important;
+    font-family: inherit !important;
+    transition: all 0.3s ease !important;
+}
+
+.symbol-search-input:focus,
+.chat-input:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(0, 247, 255, 0.1) !important;
+    background: var(--surface-primary) !important;
+}
+
+/* Button consistency */
+.timeframe-btn,
+.chart-type-btn {
+    background: var(--surface-primary) !important;
+    border: 1px solid var(--border-subtle) !important;
+    color: var(--text-light) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-family: inherit !important;
+    margin: 0 !important;
+}
+
+.timeframe-btn:hover,
+.chart-type-btn:hover,
+.timeframe-btn.active,
+.chart-type-btn.active {
+    background: var(--primary-color) !important;
+    color: var(--background-dark) !important;
+    border-color: var(--primary-color) !important;
+    transform: none !important; /* Remove any transform effects */
+}
+
+/* Remove all animations that might cause layout issues */
+* {
+    transition: none !important;
+    animation: none !important;
+}
+
+.message,
+.symbol-dropdown,
+.section-content {
+    animation: none !important;
+}
+
+/* Force clean state */
+.chart-section,
+.main-container,
+.chat-container {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Only allow essential transitions */
+button,
+input,
+.control-btn {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+/* Context menu z-index fix */
+.context-menu {
+    z-index: 10000 !important;
+}
+
+/* Ensure no element interferes */
+.trading-toolbar * {
+    z-index: auto !important;
+}
+
+.chart-controls-overlay {
+    z-index: 100 !important;
+}
+
+.chart-controls-overlay * {
+    z-index: auto !important;
+}
+
+/* Final responsive fixes */
+@media (max-width: 1400px) {
+    .main-container {
+        grid-template-columns: 1fr 450px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 1fr !important;
+        grid-template-areas: 
+            "toolbar"
+            "chart"
+            "chat" !important;
+        grid-template-rows: auto 1fr 400px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        grid-template-rows: auto 280px 1fr !important;
+    }
+    
+    .toolbar-main {
+        flex-wrap: wrap !important;
+    }
+}
+
+/* Ensure perfect box sizing */
+* {
+    box-sizing: border-box !important;
+}
+
+/* Remove any remaining margin/padding conflicts */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.navbar {
+    margin: 0 !important;
+    padding: 0.8rem 1.5rem !important;
+}
+
+/* Final precision overrides */
+.chart-context-header {
+    flex-wrap: nowrap !important;
+    overflow: hidden !important;
+}
+
+.symbol-search-container {
+    flex-shrink: 0 !important;
+    min-width: 240px !important;
+    max-width: 300px !important;
 } 

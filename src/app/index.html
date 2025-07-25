@@ -4,68 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Assistant - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/public/styles/style.css">
+    <link href="/public/styles/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- TradingView Advanced Charts Library -->
+    <script type="text/javascript" src="/charting_library/charting_library.js"></script>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">
-            <a href="/" style="text-decoration: none; color: inherit;">
-                <i class="fas fa-chart-line"></i>
-                Trading Assistant
-            </a>
+        <div class="logo" onclick="window.location.href = '/';">
+            <i class="fas fa-chart-line"></i>
+            Cherzs
         </div>
         <div class="nav-links">
-            <a href="/features"><i class="fas fa-star nav-icon"></i> Features</a>
-            <a href="/about"><i class="fas fa-info-circle nav-icon"></i> About</a>
-            <a href="/pricing"><i class="fas fa-tags nav-icon"></i> Pricing</a>
-            <a href="#signup" class="cta-button">Sign Up</a>
-            <a href="#profile" class="profile-icon"><i class="fas fa-user-circle"></i></a>
+            <div id="authButton"></div>
         </div>
     </nav>
 
     <div class="main-container">
+        <!-- TradingView-Style Toolbar -->
+        <div id="tradingToolbar"></div>
+        
         <div class="trading-panel">
             <div class="chart-section">
                 <div class="chart-context-header">
-                    <input 
-                        id="symbolSearchInput"
-                        type="text" 
-                        placeholder="Search symbol (e.g. BTC/USDT)" 
-                        autocomplete="off"
-                        class="symbol-search-input"
-                    />
-                    <ul id="symbolSuggestions" class="symbol-suggestions"></ul>
-                    | <span class="timeframe" id="activeTimeframe">1H</span>
-                    | <span class="last-price" id="lastPrice"><span class="live-dot"></span>Last Price: $43,500 <span class="price-up">▲</span></span>
-                </div>
-                <div class="chart-toolbar">
-                    <div class="timeframe-selector">
-                        <button class="active">1H</button>
-                        <button>4H</button>
-                        <button>1D</button>
-                        <button>1W</button>
-                    </div>
+                    <!-- Advanced Symbol Search -->
+                    <div id="symbolSearchContainer"></div>
                     
-                    <div class="chart-tools">
-                        <button onclick="window.chartComponent && window.chartComponent.changeChartType('line')" title="Line Chart">
-                            <i class="fas fa-chart-line"></i>
-                        </button>
-                        <button onclick="window.chartComponent && window.chartComponent.changeChartType('candlestick')" title="Candlestick" class="active">
-                            <i class="fas fa-chart-bar"></i>
-                        </button>
-                        <button onclick="window.chartComponent && window.chartComponent.changeChartType('area')" title="Area Chart">
-                            <i class="fas fa-chart-area"></i>
-                        </button>
+                    <div class="price-info">
+                        <div class="timeframe">Active: <span id="activeTimeframe">1H</span></div>
+                        <div class="last-price" id="lastPrice">
+                            <span class="live-dot"></span>Last Price: $43,515.3 <span class="price-up">▲</span>
+                        </div>
                     </div>
                 </div>
+                
                 <div id="chartContainer" style="height: 500px; width: 100%;"></div>
+                
             </div>
         </div>
 
         <div id="chatContainer" class="chat-panel"></div>
     </div>
-    <script type="module" src="/src/main.js"></script>
+
+    <script type="module" src="../services/auth.js"></script>
+    <script type="module" src="../components/AuthButton.js"></script>
+    <script type="module" src="../main.js"></script>
 </body>
 </html> 

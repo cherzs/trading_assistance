@@ -24,6 +24,7 @@ export class ChatBot {
             // Event listeners
             this.form.addEventListener('submit', (e) => this.handleSubmit(e));
             this.input.addEventListener('input', (e) => this.handleInput(e));
+            this.input.addEventListener('keydown', (e) => this.handleKeyDown(e));
             
             // Add initial message
             this.addMessage("Hello! I'm your AI Trading Assistant. What do you want to know about trading today?", 'ai');
@@ -76,15 +77,70 @@ export class ChatBot {
     }
 
     scrollToBottom() {
-        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        setTimeout(() => {
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }, 100);
+    }
+
+    formatMessage(text) {
+        // Enhanced text formatting for better readability
+        let formattedText = text;
+        
+        // Convert **text** to bold
+        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Convert *text* to italic
+        formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Convert • to proper bullet points
+        formattedText = formattedText.replace(/•/g, '•');
+        
+        // Handle numbered lists (1. 2. 3.)
+        formattedText = formattedText.replace(/(\d+\.\s)/g, '<br><strong>$1</strong>');
+        
+        // Handle bullet points that start lines
+        formattedText = formattedText.replace(/\n•\s/g, '<br>• ');
+        formattedText = formattedText.replace(/^•\s/g, '• ');
+        
+        // Convert \n\n to proper paragraph breaks
+        formattedText = formattedText.replace(/\n\n/g, '</p><p>');
+        
+        // Convert single \n to line breaks
+        formattedText = formattedText.replace(/\n/g, '<br>');
+        
+        // Wrap in paragraph tags if not already
+        if (!formattedText.includes('<p>')) {
+            formattedText = `<p>${formattedText}</p>`;
+        }
+        
+        // Fix empty paragraphs
+        formattedText = formattedText.replace(/<p><\/p>/g, '');
+        formattedText = formattedText.replace(/<p><br>/g, '<p>');
+        
+        // Handle price formatting ($123,456.78)
+        formattedText = formattedText.replace(/\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)/g, '<code>$$$1</code>');
+        
+        // Handle percentage formatting (±12.34%)
+        formattedText = formattedText.replace(/([\+\-]?\d+\.?\d*%)/g, '<strong>$1</strong>');
+        
+        return formattedText;
     }
 
     addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}`;
-        messageDiv.textContent = text;
+        
+        if (sender === 'ai') {
+            // Format AI messages with better structure
+            messageDiv.innerHTML = this.formatMessage(text);
+        } else {
+            // User messages remain as plain text
+            messageDiv.textContent = text;
+        }
+        
         this.messagesContainer.appendChild(messageDiv);
         this.scrollToBottom();
+        
         console.log(`Message added: ${sender} - ${text.substring(0, 50)}...`);
     }
 
@@ -98,7 +154,7 @@ export class ChatBot {
             if (!this.loadingDiv) {
                 const loadingDiv = document.createElement('div');
                 loadingDiv.className = 'message ai';
-                loadingDiv.innerHTML = '<div class="typing-indicator">Typing... <span class="chat-loading-spinner"></span></div>';
+                loadingDiv.innerHTML = '<div class="typing-indicator">AI is thinking... <span class="chat-loading-spinner"></span></div>';
                 this.messagesContainer.appendChild(loadingDiv);
                 this.loadingDiv = loadingDiv;
                 this.scrollToBottom();
@@ -111,6 +167,14 @@ export class ChatBot {
 
     handleInput(e) {
         this.input.value = e.target.value;
+    }
+
+    handleKeyDown(e) {
+        // Allow Enter to submit, but Shift+Enter for new line
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.handleSubmit(e);
+        }
     }
 
     async handleSubmit(e) {

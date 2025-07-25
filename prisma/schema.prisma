@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  picture     String?
+  googleId    String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lastLogin   DateTime?
+  
+  // Trading preferences
+  preferences Json?
+  
+  // Chat sessions
+  chatSessions ChatSession[]
+  
+  @@map("users")
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  userId    String
+  sessionId String   @unique
+  messages  Json[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("chat_sessions")
+}
+
+model TradingAlert {
+  id          String   @id @default(cuid())
+  userId      String
+  symbol      String
+  targetPrice Decimal
+  alertType   String   // "above", "below"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  triggeredAt DateTime?
+  
+  @@map("trading_alerts")
+} 

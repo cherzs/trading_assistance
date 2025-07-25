@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 export default class GeminiChat {
     constructor() {
@@ -7,12 +7,18 @@ export default class GeminiChat {
         this.apiKey = process.env.GEMINI_API_KEY;
         
         if (!this.apiKey) {
-            console.warn('Warning: Gemini API key not found. Using mock responses.');
+            console.log('⚠️  No valid Gemini API key found. Using mock trading responses.');
             this.useMockResponses = true;
         } else {
-            this.genAI = new GoogleGenerativeAI(this.apiKey);
-            this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
-            this.useMockResponses = false;
+            try {
+                // Initialize the new Gemini API client
+                this.ai = new GoogleGenAI({});
+                this.useMockResponses = false;
+                console.log('✅ Gemini AI configured successfully with model: gemini-2.5-flash');
+            } catch (error) {
+                console.log('⚠️  Error configuring Gemini AI:', error.message);
+                this.useMockResponses = true;
+            }
         }
     }
 
@@ -22,46 +28,74 @@ export default class GeminiChat {
                 return this.getMockResponse(message, sessionId, bitcoinData);
             }
 
-            let chat = this.chatSessions.get(sessionId);
-            if (!chat) {
-                chat = this.model.startChat({
-                    history: [
-                        {
-                            role: "user",
-                            parts: [{ text: "You are an AI trading assistant. Help users with trading questions and analysis." }],
-                        },
-                        {
-                            role: "model",
-                            parts: [{ text: "Hello! I'm your AI Trading Assistant. I can help you with trading analysis, market insights, and answer questions about cryptocurrencies and trading strategies. How can I assist you today?" }],
-                        },
-                    ],
-                });
-                this.chatSessions.set(sessionId, chat);
+            // Get or create chat history for this session
+            let chatHistory = this.chatSessions.get(sessionId) || [];
+            
+            // Build context with market data and chat history
+            const marketContext = bitcoinData ? `
+Current Market Data:
+- Bitcoin Price: $${bitcoinData.price.toLocaleString()}
+- 24h Change: ${bitcoinData.change_24h.toFixed(2)}%
+- 24h High: $${bitcoinData.high_24h.toLocaleString()}
+- 24h Low: $${bitcoinData.low_24h.toLocaleString()}
+- Volume: ${bitcoinData.volume.toFixed(2)} BTC
+
+` : '';
+
+            const systemPrompt = `You are an expert AI Trading Assistant specializing in cryptocurrency and financial markets. 
+
+${marketContext}
+
+Your role:
+- Provide professional trading analysis and insights
+- Use current market data in your responses when relevant
+- Give practical, actionable advice
+- Focus on risk management and education
+- Keep responses concise but informative
+- Never provide financial advice as investment recommendations
+
+Previous conversation context:
+${chatHistory.slice(-4).map(h => `${h.role}: ${h.content}`).join('\n')}
+
+User's current question: ${message}`;
+
+            // Generate response using the new API
+            const response = await this.ai.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: systemPrompt,
+                config: {
+                    thinkingConfig: {
+                        thinkingBudget: 0, // Disable thinking for faster responses
+                    },
+                    temperature: 0.7,
+                    maxOutputTokens: 500,
+                }
+            });
+
+            const aiResponse = response.text;
+            
+            // Update chat history
+            chatHistory.push(
+                { role: 'user', content: message },
+                { role: 'assistant', content: aiResponse }
+            );
+            
+            // Keep only last 10 exchanges (20 messages)
+            if (chatHistory.length > 20) {
+                chatHistory = chatHistory.slice(-20);
             }
-
-            const bitcoinContext = bitcoinData ? `
-                Current Market Data:
-                Price: $${bitcoinData.price}
-                24h High: $${bitcoinData.high_24h}
-                24h Low: $${bitcoinData.low_24h}
-                Volume: ${bitcoinData.volume} BTC
-                24h Change: ${bitcoinData.change_24h.toFixed(2)}%
-
-                Use this data to provide more accurate analysis.
-                ` : '';
-
-            const enhancedMessage = `${bitcoinContext}\n\nUser question: ${message}`;
             
-            const result = await chat.sendMessage(enhancedMessage);
-            const response = await result.response;
-            
+            this.chatSessions.set(sessionId, chatHistory);
+
             return {
-                response: response.text(),
+                response: `${aiResponse}\n\n*Powered by Gemini 2.5 Flash*`,
                 sessionId,
                 bitcoinData
             };
+            
         } catch (error) {
             console.error('Error in Gemini chat:', error);
+            console.log('🔄 Falling back to mock responses due to API error');
             return this.getMockResponse(message, sessionId, bitcoinData);
         }
     }
@@ -73,11 +107,12 @@ export default class GeminiChat {
         const currentPrice = bitcoinData ? bitcoinData.price : 43500;
         const change24h = bitcoinData ? bitcoinData.change_24h : 2.5;
         const isUp = change24h > 0;
+        const trend = isUp ? 'bullish' : 'bearish';
         
-        // Intelligent response matching
+        // Advanced trading analysis responses
         if (lowerMessage.includes('btc') || lowerMessage.includes('bitcoin')) {
             return {
-                response: `Based on current market data, Bitcoin is trading at $${currentPrice.toLocaleString()} with a ${isUp ? 'positive' : 'negative'} 24h change of ${change24h.toFixed(2)}%. ${isUp ? 'The upward momentum suggests bullish sentiment' : 'The downward pressure indicates some market caution'}. Always consider risk management and do your own research before making trading decisions.`,
+                response: `📊 **Bitcoin Analysis**\n\nCurrent Price: $${currentPrice.toLocaleString()}\n24h Change: ${change24h.toFixed(2)}%\n\nTechnical Outlook: The ${trend} sentiment suggests ${isUp ? 'upward momentum with potential for continued gains' : 'some consolidation or correction may be due'}. Key levels to watch:\n\n• Support: $${(currentPrice * 0.95).toFixed(0)}\n• Resistance: $${(currentPrice * 1.05).toFixed(0)}\n\n⚡ **Trading Tip**: Always use proper risk management and consider dollar-cost averaging for long-term positions.\n\n🤖 *Demo Mode - Enhanced trading analysis*`,
                 sessionId,
                 bitcoinData
             };
@@ -85,69 +120,49 @@ export default class GeminiChat {
         
         if (lowerMessage.includes('eth') || lowerMessage.includes('ethereum')) {
             return {
-                response: `Ethereum remains a strong fundamental play in the crypto market. With ongoing developments in Layer 2 scaling and the transition to Proof of Stake, ETH continues to be a cornerstone of DeFi. Current market trends suggest watching key support levels around $3,000-$3,200. Remember to diversify your portfolio and never invest more than you can afford to lose.`,
+                response: `🔷 **Ethereum Analysis**\n\nETH remains a cornerstone of DeFi and smart contract ecosystems. Current market dynamics:\n\n• **Fundamentals**: Strong development activity and Layer 2 adoption\n• **Technical**: Watch $3,000 support and $3,500 resistance\n• **Catalogs**: Upcoming upgrades and institutional adoption\n\n**Strategy Suggestions**:\n1. DCA for long-term exposure\n2. Monitor gas fees and network usage\n3. Consider staking rewards (4-6% APY)\n\n⚠️ Remember: Past performance doesn't guarantee future results.\n\n🤖 *Demo Mode - Professional analysis*`,
                 sessionId,
                 bitcoinData
             };
         }
         
-        if (lowerMessage.includes('buy') || lowerMessage.includes('sell') || lowerMessage.includes('trade')) {
+        if (lowerMessage.includes('strategy') || lowerMessage.includes('how to trade')) {
             return {
-                response: `For trading decisions, I recommend considering these factors: 1) Technical analysis (support/resistance levels), 2) Market sentiment and news, 3) Risk management (stop losses, position sizing), 4) Time horizon for your trade. Currently, with Bitcoin at $${currentPrice.toLocaleString()}, watch for breakouts above recent highs or support at key levels. Always use proper risk management!`,
+                response: `📈 **Professional Trading Strategy Framework**\n\n**1. Risk Management** (Most Important)\n• Never risk more than 1-2% per trade\n• Use stop-losses religiously\n• Position sizing based on volatility\n\n**2. Technical Analysis**\n• Support/Resistance levels\n• Moving averages (20, 50, 200)\n• Volume confirmation\n• RSI and MACD signals\n\n**3. Fundamental Analysis**\n• News and market sentiment\n• On-chain metrics\n• Institutional flows\n\n**4. Psychology**\n• Stick to your plan\n• Avoid FOMO\n• Take profits systematically\n\n💡 **Pro Tip**: Start with paper trading to test your strategies!\n\n🤖 *Demo Mode - Expert guidance*`,
                 sessionId,
                 bitcoinData
             };
         }
         
-        if (lowerMessage.includes('predict') || lowerMessage.includes('forecast') || lowerMessage.includes('future')) {
+        if (lowerMessage.includes('analysis') || lowerMessage.includes('technical')) {
             return {
-                response: `While I can't predict exact price movements, I can share some analysis: Current market conditions show ${isUp ? 'positive momentum' : 'consolidation patterns'}. Key factors to watch include: institutional adoption, regulatory news, and overall market sentiment. The crypto market is highly volatile - focus on trends rather than trying to time exact entries and exits.`,
+                response: `📊 **Technical Analysis Insights**\n\nBased on current market conditions (BTC: $${currentPrice.toLocaleString()}):\n\n**Chart Patterns**:\n• ${isUp ? 'Ascending triangle formation' : 'Descending wedge pattern'}\n• Volume ${isUp ? 'supporting the move' : 'declining with price'}\n\n**Key Indicators**:\n• RSI: ${isUp ? 'Approaching overbought (>70)' : 'Near oversold (<30)'}\n• MACD: ${isUp ? 'Bullish crossover signal' : 'Bearish divergence forming'}\n• Moving Averages: Price ${isUp ? 'above' : 'below'} key EMAs\n\n**Actionable Levels**:\n• Entry: $${(currentPrice * (isUp ? 0.98 : 1.02)).toFixed(0)}\n• Stop: $${(currentPrice * (isUp ? 0.95 : 1.05)).toFixed(0)}\n• Target: $${(currentPrice * (isUp ? 1.08 : 0.92)).toFixed(0)}\n\n🎯 **Risk/Reward**: 1:2 ratio\n\n🤖 *Demo Mode - Technical expertise*`,
                 sessionId,
                 bitcoinData
             };
         }
         
-        if (lowerMessage.includes('strategy') || lowerMessage.includes('how') || lowerMessage.includes('start')) {
+        if (lowerMessage.includes('risk') || lowerMessage.includes('management')) {
             return {
-                response: `Here's a solid trading strategy framework: 1) Start with education - understand markets and risk, 2) Use dollar-cost averaging for long-term positions, 3) Set clear entry/exit rules, 4) Never risk more than 1-2% per trade, 5) Keep emotions in check with predetermined plans. For beginners, consider starting with major cryptocurrencies like BTC and ETH before exploring altcoins.`,
+                response: `🛡️ **Risk Management Essentials**\n\n**Position Sizing Rules**:\n• Max 1-2% account risk per trade\n• Diversify across 5-10 positions\n• Adjust size based on volatility\n\n**Stop Loss Strategy**:\n• Technical stops at key levels\n• Trailing stops for trend following\n• Time-based stops for swing trades\n\n**Portfolio Protection**:\n• Hedge with inverse positions\n• Cash reserves for opportunities\n• Rebalance monthly\n\n**Psychology Tips**:\n• Write down your plan BEFORE trading\n• Never average down on losing trades\n• Take profits systematically\n\n**Current Market Risk**: ${isUp ? 'Moderate (trending up)' : 'High (trending down)'}\n\n⚖️ **Remember**: Preserve capital first, profits second!\n\n🤖 *Demo Mode - Risk expertise*`,
                 sessionId,
                 bitcoinData
             };
         }
         
-        if (lowerMessage.includes('risk') || lowerMessage.includes('loss') || lowerMessage.includes('safe')) {
-            return {
-                response: `Risk management is crucial in trading! Key principles: 1) Never invest more than you can afford to lose, 2) Use stop-loss orders to limit downside, 3) Diversify across different assets, 4) Position sizing - keep individual trades small relative to your portfolio, 5) Avoid FOMO (fear of missing out). The crypto market can be very volatile, so preparation and discipline are essential.`,
-                sessionId,
-                bitcoinData
-            };
-        }
-        
-        if (lowerMessage.includes('technical') || lowerMessage.includes('analysis') || lowerMessage.includes('chart')) {
-            return {
-                response: `Technical analysis helps identify trends and potential entry/exit points. Key concepts: 1) Support and resistance levels, 2) Moving averages (20, 50, 200-day), 3) Volume analysis, 4) Chart patterns (triangles, flags, head & shoulders), 5) Momentum indicators (RSI, MACD). Currently, you can use the chart tools above to practice identifying these patterns on real market data.`,
-                sessionId,
-                bitcoinData
-            };
-        }
-        
-        // General responses for other queries
-        const generalResponses = [
-            `Great question! The crypto market is dynamic and always evolving. With Bitcoin currently at $${currentPrice.toLocaleString()}, we're seeing ${isUp ? 'bullish' : 'cautious'} sentiment. What specific aspect of trading would you like to explore?`,
+        // Enhanced general responses
+        const advancedResponses = [
+            `🎯 **Market Overview**\n\nCurrent Bitcoin: $${currentPrice.toLocaleString()} (${change24h.toFixed(2)}%)\n\nMarket sentiment appears ${trend} with ${isUp ? 'buyers stepping in at dips' : 'sellers maintaining pressure'}. This creates opportunities for:\n\n• ${isUp ? 'Momentum plays on breakouts' : 'Contrarian plays at support'}\n• Range trading strategies\n• DCA accumulation plans\n\nWhat specific aspect interests you most?`,
             
-            `I'm here to help with your trading questions! Whether you're interested in technical analysis, risk management, or market trends, feel free to ask. The current market data shows interesting patterns worth discussing.`,
+            `📚 **Trading Education Focus**\n\nSuccess in trading comes from mastering these core areas:\n\n1. **Technical Analysis** - Chart patterns, indicators\n2. **Risk Management** - Position sizing, stops\n3. **Psychology** - Discipline, emotional control\n4. **Market Structure** - Understanding price action\n\nCurrent market ($${currentPrice.toLocaleString()}) offers great learning opportunities. Which area would you like to explore?`,
             
-            `Trading success comes from continuous learning and disciplined execution. With the current market conditions, it's a good time to review your strategy and risk management. What trading topic interests you most?`,
-            
-            `The cryptocurrency market offers many opportunities, but requires careful analysis. Current price action suggests ${isUp ? 'positive momentum' : 'consolidation'}. Would you like to discuss any specific trading strategies or coins?`,
-            
-            `Education is the foundation of successful trading. From understanding market cycles to implementing proper risk management, there's always more to learn. What aspect of trading would you like to dive deeper into?`
+            `⚡ **Real-Time Analysis**\n\nBTC Price Action: $${currentPrice.toLocaleString()}\nTrend: ${isUp ? '📈 Bullish momentum' : '📉 Bearish pressure'}\n\nKey Observations:\n• Volume: ${isUp ? 'Confirming the move' : 'Declining with price'}\n• Sentiment: ${isUp ? 'Risk-on environment' : 'Risk-off conditions'}\n• Opportunity: ${isUp ? 'Breakout potential' : 'Oversold bounce setup'}\n\nWhat's your trading question?`
         ];
         
-        const randomResponse = generalResponses[Math.floor(Math.random() * generalResponses.length)];
+        const randomResponse = advancedResponses[Math.floor(Math.random() * advancedResponses.length)];
         
         return {
-            response: `${randomResponse}${demoNote}`,
+            response: `${randomResponse}\n\n🤖 *Demo Mode - Professional trading insights*`,
             sessionId,
             bitcoinData
         };
@@ -155,5 +170,6 @@ export default class GeminiChat {
 
     resetChatSession(sessionId) {
         this.chatSessions.delete(sessionId);
+        console.log(`🔄 Chat session ${sessionId} reset`);
     }
 } 

@@ -2,7 +2,7 @@
 
 A modern, AI-powered trading assistance platform that provides real-time market data, advanced charting, and intelligent trading insights.
 
-## 🚀 Features
+## Features
 
 ### 📊 **Advanced Charting**
 - Real-time price updates with simulated market data
@@ -200,7 +200,7 @@ The application is fully responsive and works on:
 - Check browser console for any JavaScript errors
 - Monitor network tab for API request/response debugging
 
-## 🚀 Deployment
+## Deployment
 
 ### Build for Production
 ```bash
